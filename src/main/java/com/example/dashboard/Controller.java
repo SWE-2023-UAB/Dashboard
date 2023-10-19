@@ -20,6 +20,7 @@ import javafx.scene.Node;
 
 public class Controller implements Initializable {
     public TreeView treeView;
+    TreeItem<String> rootItem = new TreeItem<>("Farm");
     @FXML
     public void SelectItem(){
 
@@ -48,6 +49,7 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         itemContainerBox.getItems().addAll(itemContainerOptions);
         itemContainerBox.setOnAction(this::GetContainerSelection);
+        treeView.setRoot(rootItem);
     }
     //Get input from Item Container Actions
     public void GetContainerSelection (ActionEvent event){
@@ -63,6 +65,11 @@ public class Controller implements Initializable {
                 Optional<ButtonType> clickedButton = dialog.showAndWait();
                 if(clickedButton.get() == ButtonType.FINISH){
                     System.out.println("Finished Pressed");
+                    ICController icController = fxmlLoader.getController();
+                    TreeItem<String> branch01 = new TreeItem<>(icController.itemC.name);
+                    rootItem.getChildren().addAll(branch01);
+
+
                 }
             } catch (IOException e) {
                 // Handle the IOException, e.g., by printing an error message
