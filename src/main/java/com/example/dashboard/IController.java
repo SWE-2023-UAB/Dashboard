@@ -1,21 +1,13 @@
 package com.example.dashboard;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyEvent;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-//Runs when Dialogue is opened
-public class ICController{
-    //Item Container class to define item container objects
+public class IController {
+    //Item  class to define item objects
     @FXML
     public TextField icName;
     public TextField icPrice;
@@ -74,6 +66,4 @@ public class ICController{
         System.out.println(itemC);
         return itemC.name;
     }
-
-
 }
