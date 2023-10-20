@@ -54,7 +54,7 @@ public class ICController{
 
     public void lengthChange(KeyEvent event){
         length = icLength.getText();
-        itemC.setLenght(length);
+        itemC.setLength(length);
     }
 
     public void widthChange(KeyEvent event){
@@ -72,7 +72,7 @@ public class ICController{
     public Object icClicked(ActionEvent event){
 
         System.out.println(itemC);
-        return itemC.name;
+        return itemC.getName();
     }
 
 

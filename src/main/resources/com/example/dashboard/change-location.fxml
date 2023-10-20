@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<DialogPane prefHeight="380.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.ChangeLocationController">
+   <content>
+      <AnchorPane prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Label alignment="CENTER" layoutX="65.0" layoutY="31.0" prefHeight="17.0" prefWidth="302.0" text="Change Location">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="57.0" layoutY="148.0" prefHeight="17.0" prefWidth="72.0" text="Location X:" />
+            <Label layoutX="57.0" layoutY="179.0" prefHeight="17.0" prefWidth="72.0" text="Location Y:" />
+            <TextField layoutX="139.0" layoutY="144.0" onKeyTyped="#changeXCoord" fx:id="xCoordField" />
+            <TextField fx:id="yCoordField" layoutX="139.0" layoutY="175.0" onKeyTyped="#changeYCoord" />
+            <Button layoutX="327.0" layoutY="305.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Submit " />
+         </children>
+      </AnchorPane>
+   </content>
+   <buttonTypes>
+      <ButtonType fx:constant="FINISH" />
+   </buttonTypes>
+</DialogPane>

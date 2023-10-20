@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<DialogPane prefHeight="380.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.ChangeDimensionsController">
+   <content>
+      <AnchorPane prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Label alignment="CENTER" layoutX="65.0" layoutY="31.0" prefHeight="17.0" prefWidth="302.0" text="Change Dimensions" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="86.0" layoutY="128.0" prefHeight="17.0" prefWidth="72.0" text="Length:" />
+            <Label layoutX="93.0" layoutY="163.0" prefHeight="17.0" prefWidth="72.0" text="Width:" />
+            <Label layoutX="93.0" layoutY="199.0" prefHeight="17.0" prefWidth="72.0" text="Height:" />
+            <TextField fx:id="lengthField" layoutX="145.0" layoutY="124.0" onKeyTyped="#changeLength" />
+            <TextField fx:id="widthField" layoutX="145.0" layoutY="159.0" onKeyTyped="#changeWidth" />
+            <TextField fx:id="heightField" layoutX="145.0" layoutY="195.0" onKeyTyped="#changeHeight" />
+            <Button layoutX="327.0" layoutY="299.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="61.0" text="Submit " />
+         </children>
+      </AnchorPane>
+   </content>
+   <buttonTypes>
+      <ButtonType fx:constant="FINISH" />
+   </buttonTypes>
+</DialogPane>

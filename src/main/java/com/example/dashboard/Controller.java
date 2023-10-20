@@ -37,20 +37,17 @@ public class Controller implements Initializable {
             "Add Item-Container",
             "Add Item",
             "Delete Item-Container",
-            "Change name", "Change Price",
-            "Change Location-X",
-            "Change Location-Y",
-            "Change Length",
-            "Change Width", "Change Height"
+            "Change Name",
+            "Change Price",
+            "Change Location",
+            "Change Dimensions"
     };
     public String[] itemOptions = {
             "Delete Item",
             "Change name",
             "Change Price",
-            "Change Location-X",
-            "Change Location-Y",
-            "Change Length",
-            "Change Width", "Change Height"
+            "Change Location",
+            "Change Dimensions"
     };
 
     @Override
@@ -87,10 +84,10 @@ public class Controller implements Initializable {
                     //Run IC-Controller
                     ICController icController = fxmlLoader.getController();
                     //Add item to hierarchy
-                    TreeItem<String> branch = new TreeItem<>(icController.itemC.name);
+                    TreeItem<String> branch = new TreeItem<>(icController.itemC.getName());
                     rootItem.getChildren().addAll(branch);
                     //Add item to Hashmap with name as key and object as value
-                    itemMap.put(icController.itemC.name, icController.itemC);
+                    itemMap.put(icController.itemC.getName(), icController.itemC);
                 }
             } catch (IOException e) {
                 // Handle the IOException
@@ -111,14 +108,13 @@ public class Controller implements Initializable {
                     System.out.println("Finished Pressed");
                     IController iController = fxmlLoader.getController();
                     //Create leaf node
-                    TreeItem<String> leaf = new TreeItem<>(iController.itemC.name);
+                    TreeItem<String> leaf = new TreeItem<>(iController.itemC.getName());
                     //Check which item is currently selected in hierarchy
                     TreeItem<String> item = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
                     //add leaf node to item currently selected.
                     item.getChildren().addAll(leaf);
                     //Add item to Hashmap with name as key and object as value
-                    itemMap.put(iController.itemC.name, iController.itemC);
-
+                    itemMap.put(iController.itemC.getName(), iController.itemC);
                 }
             } catch (IOException e) {
                 // Handle the IOException, e.g., by printing an error message
@@ -131,9 +127,121 @@ public class Controller implements Initializable {
             boolean remove = curr.getParent().getChildren().remove(curr);
         } else if (containerSelection.equals("Change name")) {
             //Change the name of the current container item WIP
-            TreeItem curr = (TreeItem)treeView.getSelectionModel().getSelectedItem();
-            if (curr != null) {
-                System.out.println(itemMap.get(curr.getValue()).name);
+            try {
+                TreeItem curr = (TreeItem) treeView.getSelectionModel().getSelectedItem();
+                if (curr != null) {
+                    //loading name change popup
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("change-name.fxml"));
+                    DialogPane icDialogue = fxmlLoader.load();
+                    Dialog<ButtonType> dialog = new Dialog<>();
+                    dialog.setDialogPane(icDialogue);
+                    dialog.setTitle("Change Name");
+                    Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+                    //checking to see if button is clicked
+                    if(clickedButton.get() == ButtonType.FINISH){
+                        ChangeNameController changeNameController = fxmlLoader.getController();
+                        String newName = changeNameController.getNewName();
+                        //creating a copy of the original item for updating
+                        ItemContainer updatedContainer = itemMap.get(curr.getValue());
+                        //Removing old instance
+                        itemMap.remove(curr.getValue());
+                        //updating name and setting it in tree node
+                        updatedContainer.setName(newName);
+                        //inserting new version into hashmap
+                        itemMap.put(updatedContainer.getName(), updatedContainer);
+                        curr.setValue(newName);
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else if(containerSelection.equals("Change Price")){
+            try{
+                TreeItem curr = (TreeItem) treeView.getSelectionModel().getSelectedItem();
+                if(curr != null){
+                    //loading price change popup
+                    System.out.println("Old price: " + itemMap.get(curr.getValue()).getPrice());
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("change-price.fxml"));
+                    DialogPane icDialogue = fxmlLoader.load();
+                    Dialog<ButtonType> dialog = new Dialog<>();
+                    dialog.setDialogPane(icDialogue);
+                    dialog.setTitle("Change Price");
+                    Optional<ButtonType> clickedButton = dialog.showAndWait();
+
+                    if(clickedButton.get() == ButtonType.FINISH){
+                        ChangePriceController changePriceController = fxmlLoader.getController();
+                        //getting new price
+                        String newPrice = changePriceController.getNewPrice();
+                        //updating price with new price
+                        itemMap.get(curr.getValue()).setPrice(newPrice);
+                        System.out.println("New Price: " + itemMap.get(curr.getValue()).getPrice());
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else if(containerSelection.equals("Change Location")){
+            try {
+                TreeItem curr = (TreeItem) treeView.getSelectionModel().getSelectedItem();
+                if(curr != null){
+                    //loading up the coordinates popup
+                    System.out.println("Old Coords: (" + itemMap.get(curr.getValue()).getLocationX()
+                            +", (" + itemMap.get(curr.getValue()).getLocationY() +")");
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("change-location.fxml"));
+                    DialogPane icDialogue = fxmlLoader.load();
+                    Dialog<ButtonType> dialog = new Dialog<>();
+                    dialog.setDialogPane(icDialogue);
+                    dialog.setTitle("Change Location");
+                    Optional<ButtonType> clickedButton = dialog.showAndWait();
+                    if(clickedButton.get() == ButtonType.FINISH){
+                        ChangeLocationController changeLocationController = fxmlLoader.getController();
+                        //getting new x and y coordinates.
+                        String newX = changeLocationController.getNewXCoord();
+                        String newY = changeLocationController.getNewYCoord();
+                        //updating x and y
+                        itemMap.get(curr.getValue()).setLocationX(newX);
+                        itemMap.get(curr.getValue()).setLocationY(newY);
+                        System.out.println("New Coords: (" + itemMap.get(curr.getValue()).getLocationX()
+                                +", (" + itemMap.get(curr.getValue()).getLocationY() +")");
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else if(containerSelection.equals("Change Dimensions")){
+            try {
+                TreeItem curr = (TreeItem) treeView.getSelectionModel().getSelectedItem();
+                if(curr != null){
+                    //loading up the dimensions popup
+                    System.out.println("Old Dimensions: " + itemMap.get(curr.getValue()).getLength()
+                            +" x " + itemMap.get(curr.getValue()).getWidth() +" x "
+                            + itemMap.get(curr.getValue()).getHeight());
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("change-dimensions.fxml"));
+                    DialogPane icDialogue = fxmlLoader.load();
+                    Dialog<ButtonType> dialog = new Dialog<>();
+                    dialog.setDialogPane(icDialogue);
+                    dialog.setTitle("Change Dimensions");
+                    Optional<ButtonType> clickedButton = dialog.showAndWait();
+                    if(clickedButton.get() == ButtonType.FINISH){
+                        ChangeDimensionsController changeDimensionsController = fxmlLoader.getController();
+                        //getting new x and y coordinates.
+                        String newLength = changeDimensionsController.getNewLength();
+                        String newWidth = changeDimensionsController.getNewWidth();
+                        String newHeight = changeDimensionsController.getNewHeight();
+
+                        //updating dimensions
+                        itemMap.get(curr.getValue()).setLength(newLength);
+                        itemMap.get(curr.getValue()).setWidth(newWidth);
+                        itemMap.get(curr.getValue()).setHeight(newHeight);
+
+                        System.out.println("New Dimensions: " + itemMap.get(curr.getValue()).getLength()
+                                +" x " + itemMap.get(curr.getValue()).getWidth() +" x "
+                                + itemMap.get(curr.getValue()).getHeight());
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
     }

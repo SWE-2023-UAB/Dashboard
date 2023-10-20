@@ -1,14 +1,14 @@
 package com.example.dashboard;
 
 public class ItemContainer {
-    public String name, price, locationX, locationY, lenght, width, height;
+    private String name, price, locationX, locationY, length, width, height;
 
-    public ItemContainer(String name, String price, String locationX, String locationY, String lenght, String width, String height) {
+    public ItemContainer(String name, String price, String locationX, String locationY, String length, String width, String height) {
         this.name = name;
         this.price = price;
         this.locationX = locationX;
         this.locationY = locationY;
-        this.lenght = lenght;
+        this.length = length;
         this.width = width;
         this.height = height;
     }
@@ -45,12 +45,12 @@ public class ItemContainer {
         this.locationY = locationY;
     }
 
-    public String getLenght() {
-        return lenght;
+    public String getLength() {
+        return length;
     }
 
-    public void setLenght(String lenght) {
-        this.lenght = lenght;
+    public void setLength(String length) {
+        this.length = length;
     }
 
     public String getWidth() {
