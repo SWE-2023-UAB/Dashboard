@@ -21,49 +21,49 @@ public class IController {
 
     String name, price, x, y, length, width, height;
 
-    //Create an item object to store new item container
-    ItemContainer itemC = new ItemContainer("", "", "", "", "", "", "");
+    //Create an item object
+    Item item= new Item("", "", "", "", "", "", "");
 
     //All changes set object variables to what is typed in dialogue
     public void nameChange(KeyEvent event){
         name = icName.getText();
-        itemC.setName(name);
+        item.setName(name);
     }
     public void priceChange(KeyEvent event){
         price = icPrice.getText();
-        itemC.setPrice(price);
+        item.setPrice(price);
     }
 
     public void locationxChange(KeyEvent event){
         x = icX.getText();
-        itemC.setLocationX(x);
+        item.setLocationX(x);
     }
 
     public void locationyChange(KeyEvent event){
         y = icY.getText();
-        itemC.setLocationY(y);
+        item.setLocationY(y);
     }
 
     public void lengthChange(KeyEvent event){
         length = icLength.getText();
-        itemC.setLength(length);
+        item.setLength(length);
     }
 
     public void widthChange(KeyEvent event){
         width = icWidth.getText();
-        itemC.setWidth(width);
+        item.setWidth(width);
     }
 
     public void heightChange(KeyEvent event){
         height = icHeight.getText();
-        itemC.setHeight(height);
+        item.setHeight(height);
     }
 
 
     //Submit button is clicked
     public Object icClicked(ActionEvent event){
 
-        System.out.println(itemC);
-        return itemC.getName();
+        System.out.println(item);
+        return item.getName();
     }
 }

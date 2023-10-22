@@ -1,13 +1,9 @@
 package com.example.dashboard;
 
-import java.util.HashMap;
-
-public class ItemContainer {
+public class Item {
     private String name, price, locationX, locationY, length, width, height;
-    //map of item containers being contained in a container.
-    private HashMap<String, Item> itemsMap = new HashMap<>();
 
-    public ItemContainer(String name, String price, String locationX, String locationY, String length, String width, String height) {
+    Item(String name, String price, String locationX, String locationY, String length, String width, String height){
         this.name = name;
         this.price = price;
         this.locationX = locationX;
@@ -71,13 +67,5 @@ public class ItemContainer {
 
     public void setHeight(String height) {
         this.height = height;
-    }
-
-    public void addItemToMap(String newItemName, Item newItem){
-        itemsMap.put(newItemName, newItem);
-    }
-
-    public Item getItemFromMap(String queryName){
-        return itemsMap.get(queryName);
     }
 }

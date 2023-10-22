@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
-//servers the purpose of being the controller for modifying location in change-location.fxml
+//serves the purpose of being the controller for modifying location in change-location.fxml
 public class ChangeLocationController {
     @FXML
     public TextField xCoordField;
