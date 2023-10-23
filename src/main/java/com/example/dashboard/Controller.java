@@ -44,14 +44,15 @@ public class Controller implements Initializable {
     public ChoiceBox<String> itemBox;
     public String[] itemContainerOptions = {
             "Add Item-Container",
-            "Add Item",
             "Delete Item-Container",
-            "Change Name",
-            "Change Price",
-            "Change Location",
-            "Change Dimensions"
+//            "Add Item",
+//            "Change Name",
+//            "Change Price",
+//            "Change Location",
+//            "Change Dimensions"
     };
     public String[] itemOptions = {
+            "Add Item",
             "Delete Item",
             "Change Name",
             "Change Price",
@@ -142,33 +143,10 @@ public class Controller implements Initializable {
     }
 
     //If item from item dropdown is selected
-    public void GetItemSelection (ActionEvent event){
-        //Set selected item to variable
-        String itemSelection = itemContainerBox.getValue();
-        switch(itemSelection){
-            case "Change Name" -> {
-
-            }
-            case "Change Location" -> {
-
-            }
-            case "Change Price" -> {
-
-            }
-            case "Change Dimensions" -> {
-
-            }
-            case "Delete" -> {
-
-            }
-        }
-    }
-
-    //if item from item-container dropdown is selected
     public void GetContainerSelection (ActionEvent event){
         //Set selected item to variable
         String containerSelection = itemContainerBox.getValue();
-        switch (containerSelection) {
+        switch(containerSelection){
             case "Add Item-Container" -> {
                 // Check if there's a selected item in the tree view
                 TreeItem<String> selectedItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
@@ -205,6 +183,24 @@ public class Controller implements Initializable {
                     }
                 }
             }
+            case "Delete Item-Container" -> {
+                //Get current selected node
+                TreeItem curr = (TreeItem) treeView.getSelectionModel().getSelectedItem();
+                //Check if selected item is null, not command center, and that is an ItemContainer object.
+                if(curr != null && !curr.getValue().equals("Command Center") && !curr.getValue().equals("Farm") && containerMap.get(curr.getValue()) != null){
+                    //Remove children (includes self), also remove it from hashmap
+                    curr.getParent().getChildren().remove(curr);
+                    containerMap.remove(curr.getValue());
+                }
+            }
+        }
+    }
+
+    //if item from item-container dropdown is selected
+    public void GetItemSelection (ActionEvent event){
+        //Set selected item to variable
+        String itemSelection = itemBox.getValue();
+        switch (itemSelection) {
             case "Add Item" -> {
                 //Make dialogue pop up for item.
                 TreeItem<String> selectedItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
@@ -238,16 +234,20 @@ public class Controller implements Initializable {
                     }
                 }
             }
-            case "Delete Item-Container" -> {
-                //Get current selected node
-                TreeItem curr = (TreeItem) treeView.getSelectionModel().getSelectedItem();
-                //Check if selected item is null, not command center, and that is an ItemContainer object.
-                if(curr != null && !curr.getValue().equals("Command Center") && !curr.getValue().equals("Farm") && containerMap.get(curr.getValue()) != null){
-                    //Remove children (includes self), also remove it from hashmap
-                    curr.getParent().getChildren().remove(curr);
-                    containerMap.remove(curr.getValue());
-                }
-            }
+
+            //not sure if this is working
+
+//            case "Delete Item" -> {
+//                //Get current selected node
+//                TreeItem curr = (TreeItem) treeView.getSelectionModel().getSelectedItem();
+//                //Check if selected item is null, not command center, and that is an ItemContainer object.
+//                if(curr != null && !curr.getValue().equals("Command Center") && !curr.getValue().equals("Farm") && containerMap.get(curr.getValue()) != null){
+//                    //Remove children (includes self), also remove it from hashmap
+//                    curr.getParent().getChildren().remove(curr);
+//                    containerMap.remove(curr.getValue());
+//                }
+//            }
+
             case "Change name" -> {
                 //Change the name of the current container item WIP
                 try {
