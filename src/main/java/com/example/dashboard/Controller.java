@@ -1,4 +1,5 @@
 package com.example.dashboard;
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,9 +16,11 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
+import javafx.util.Duration;
 
 public class Controller implements Initializable {
     //Hierarchy ==> TreeView
@@ -37,6 +40,9 @@ public class Controller implements Initializable {
     }
     public Pane visualPane;
     public ImageView droneImage;
+    public Button fly;
+    public Button home;
+    public Button scan;
 
     @FXML
     // Create dropdown for item and itemcontainer
@@ -80,23 +86,8 @@ public class Controller implements Initializable {
         rootItem.getChildren().addAll(branch);
         containerMap.put(commandCenterName, commandCenter);
 
-        Group commandCenterGroup = new Group();
-        //Create the rectangle for the command center in the border pane
-        Rectangle commandCenterRectangle = new Rectangle();
-        commandCenterRectangle.setX(Double.parseDouble(containerMap.get(commandCenterName).getLocationX()));
-        commandCenterRectangle.setY(Double.parseDouble(containerMap.get(commandCenterName).getLocationY()));
-        commandCenterRectangle.setWidth(Double.parseDouble(containerMap.get(commandCenterName).getLength()));
-        commandCenterRectangle.setHeight(Double.parseDouble(containerMap.get(commandCenterName).getWidth()));
-        commandCenterRectangle.setFill(null);
-        commandCenterRectangle.setStroke(Color.RED);
-        Text commandCenterText = new Text(containerMap.get(commandCenterName).getName());
-        commandCenterText.setFill(Color.BLACK);
-        //Set the position of the text
-        commandCenterText.setX(Double.parseDouble(containerMap.get(commandCenterName).getLocationX()) + 5);
-        commandCenterText.setY(Double.parseDouble(containerMap.get(commandCenterName).getLocationY()) + 15);
-        //Add the rectangle and text to the group
-        commandCenterGroup.getChildren().addAll(commandCenterRectangle, commandCenterText);
-        visualPane.getChildren().add(commandCenterGroup);
+        //Draw a rectangle for the command center
+        DrawRectangle(commandCenter);
 
         //Add an item container called "Drone box" as a child of "Command Center"
         String droneBoxName = "Drone Box";
@@ -106,29 +97,10 @@ public class Controller implements Initializable {
         containerMap.put(droneBoxName, droneBox);
 
         //Rectangle for drone box
-        Group droneBoxGroup = new Group();
-        Rectangle droneBoxRectangle = new Rectangle();
-        droneBoxRectangle.setX(Double.parseDouble(containerMap.get(droneBoxName).getLocationX()));
-        droneBoxRectangle.setY(Double.parseDouble(containerMap.get(droneBoxName).getLocationY()));
-        droneBoxRectangle.setWidth(Double.parseDouble(containerMap.get(droneBoxName).getLength()));
-        droneBoxRectangle.setHeight(Double.parseDouble(containerMap.get(droneBoxName).getWidth()));
-        droneBoxRectangle.setFill(null);
-        droneBoxRectangle.setStroke(Color.RED);
-        Text droneBoxText = new Text(containerMap.get(droneBoxName).getName());
-        droneBoxText.setFill(Color.BLACK);
-        //Set the position of the text
-        droneBoxText.setX(Double.parseDouble(containerMap.get(droneBoxName).getLocationX()) + 5);
-        droneBoxText.setY(Double.parseDouble(containerMap.get(droneBoxName).getLocationY()) + 15);
-        //Add the rectangle and text to the group
-        droneBoxGroup.getChildren().addAll(droneBoxRectangle, droneBoxText);
-        visualPane.getChildren().add(droneBoxGroup);
+        DrawRectangle(droneBox);
 
         //Add an item called "Drone" as a child of "Drone Box"
         String droneName = "Drone";
-        /*THE DRONE IS CREATED AS AN ITEMCONTAINER?
-        IS THIS CORRECT?
-        SHOULD IT NOT BE AN ITEM?
-        HOW DO WE DIFFERENTIATE?*/
         Item drone = new Item(droneName, "0", "0", "0", "0", "0", "0");
         TreeItem<String> leaf = new TreeItem<>(droneName);
         branch2.getChildren().addAll(leaf);
@@ -153,11 +125,9 @@ public class Controller implements Initializable {
                 //Check if selected item is null, not command center, and that is an ItemContainer object.
                 if (selectedItem != null && !selectedItem.getValue().equals("Command Center") && containerMap.get(selectedItem.getValue()) != null) {
                     //Error handling for item containers not being added to containers.
-                    //TRIED IMPLEMENTING TYPE CHECK HERE TO PREVENT ITEM CONTAINERS GETTING PLACED IN ITEMS
-//                    if(containerMap.get(selectedItem.getValue()).getClass() != ItemContainer.class){
-//                        System.out.println("CONTAINERS CAN ONLY BE ADDED TO CONTAINERS!");
-//                        return;
-//                    }
+                    if (!(containerMap.get(selectedItem.getValue()) instanceof ItemContainer)) {
+                        throw new RuntimeException("Item containers can only be added to containers.");
+                    }
                     //Make Dialog Pop Up for Item Container
                     try {
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("item-container.fxml"));
@@ -176,6 +146,8 @@ public class Controller implements Initializable {
                             selectedItem.getChildren().add(branch);
                             //Add item to Hashmap with name as key and object as value
                             containerMap.put(icController.itemC.getName(), icController.itemC);
+                            //Draw rectangle for item container
+                            DrawRectangle(icController.itemC);
                         }
                     } catch (IOException e) {
                         // Handle the IOException
@@ -184,13 +156,34 @@ public class Controller implements Initializable {
                 }
             }
             case "Delete Item-Container" -> {
-                //Get current selected node
-                TreeItem curr = (TreeItem) treeView.getSelectionModel().getSelectedItem();
-                //Check if selected item is null, not command center, and that is an ItemContainer object.
-                if(curr != null && !curr.getValue().equals("Command Center") && !curr.getValue().equals("Farm") && containerMap.get(curr.getValue()) != null){
-                    //Remove children (includes self), also remove it from hashmap
-                    curr.getParent().getChildren().remove(curr);
-                    containerMap.remove(curr.getValue());
+                try {
+                    TreeItem<String> selectedItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
+
+                    if (selectedItem != null && !selectedItem.getValue().equals("Command Center")) {
+                        TreeItem<String> parent = selectedItem.getParent();
+                        String containerName = selectedItem.getValue();
+                        if (parent != null) {
+                            //Check if the selected item is a container and in the container map
+                            if (containerMap.containsKey(containerName) && containerMap.get(containerName) instanceof ItemContainer) {
+                                ItemContainer container = (ItemContainer) containerMap.get(containerName);
+                                Map<String, Item> itemsMap = container.getItemsMap();
+
+                                //Remove all items in the container from the visual pane
+                                for (String itemName : itemsMap.keySet()) {
+                                    deleteRectangle(itemName);
+                                }
+                                //Delete the rectangle for the container
+                                deleteRectangle(containerName);
+                                //Remove the item from the parent
+                                parent.getChildren().remove(selectedItem);
+                                //Remove the item from the container map
+                                containerMap.remove(containerName);
+                            }
+                        }
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -227,6 +220,8 @@ public class Controller implements Initializable {
                             System.out.println(containerMap.get(selectedItem.getValue()));
                             containerMap.get(selectedItem.getValue()).addItemToMap(iController.item.getName(), iController.item);
                             System.out.println(containerMap.get(selectedItem.getValue()).getItemFromMap(iController.item.getName()));
+                            //Draw rectangle for item
+                            DrawRectangle(iController.item);
                         }
                     } catch (IOException e) {
                         // Handle the IOException, e.g., by printing an error message
@@ -235,20 +230,36 @@ public class Controller implements Initializable {
                 }
             }
 
-            //not sure if this is working
+            case "Delete Item" -> {
+                try {
+                    TreeItem<String> selectedItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
 
-//            case "Delete Item" -> {
-//                //Get current selected node
-//                TreeItem curr = (TreeItem) treeView.getSelectionModel().getSelectedItem();
-//                //Check if selected item is null, not command center, and that is an ItemContainer object.
-//                if(curr != null && !curr.getValue().equals("Command Center") && !curr.getValue().equals("Farm") && containerMap.get(curr.getValue()) != null){
-//                    //Remove children (includes self), also remove it from hashmap
-//                    curr.getParent().getChildren().remove(curr);
-//                    containerMap.remove(curr.getValue());
-//                }
-//            }
+                    if (selectedItem != null) {
+                        TreeItem<String> parent = selectedItem.getParent();
 
-            case "Change name" -> {
+                        if (parent != null) {
+                            String itemName = selectedItem.getValue();
+                            ItemContainer parentContainer = containerMap.get(parent.getValue());
+
+                            if (parentContainer != null) {
+                                // Check if the selected item exists in the parent container
+                                if (parentContainer.getItemFromMap(itemName) != null) {
+                                    // Remove the item from the parent container's item map
+                                    parentContainer.removeItemFromMap(itemName);
+                                    // Remove the item from the hierarchy
+                                    parent.getChildren().remove(selectedItem);
+                                    // Remove the rectangle from the visual pane
+                                    deleteRectangle(itemName);
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            case "Change Name" -> {
                 //Change the name of the current container item WIP
                 try {
                     TreeItem curr = (TreeItem) treeView.getSelectionModel().getSelectedItem();
@@ -275,6 +286,10 @@ public class Controller implements Initializable {
                             //inserting new version into hashmap
                             containerMap.put(updatedContainer.getName(), updatedContainer);
                             curr.setValue(newName);
+                            //print out to console to check if it worked
+                            System.out.println("New Name: " + containerMap.get(curr.getValue()).getName());
+                            //updating rectangle
+                            updateRectangle(curr.getValue().toString());
                         }
                     }
                 } catch (Exception e) {
@@ -332,6 +347,8 @@ public class Controller implements Initializable {
                             containerMap.get(curr.getValue()).setLocationY(newY);
                             System.out.println("New Coords: (" + containerMap.get(curr.getValue()).getLocationX()
                                     + ", (" + containerMap.get(curr.getValue()).getLocationY() + ")");
+                            //updating rectangle
+                            updateRectangle(curr.getValue().toString());
                         }
                     }
                 } catch (Exception e) {
@@ -368,6 +385,8 @@ public class Controller implements Initializable {
                             System.out.println("New Dimensions: " + containerMap.get(curr.getValue()).getLength()
                                     + " x " + containerMap.get(curr.getValue()).getWidth() + " x "
                                     + containerMap.get(curr.getValue()).getHeight());
+                            //updating rectangle
+                            updateRectangle(curr.getValue().toString());
                         }
                     }
                 } catch (Exception e) {
@@ -375,5 +394,135 @@ public class Controller implements Initializable {
                 }
             }
         }
+    }
+
+    //Map to store groups to keep track of rectangles
+    public Map<String, Group> groupMap = new HashMap<String, Group>();
+
+    //Method to draw the rectangles that takes itemContainer as a parameter
+    public void DrawRectangle(ItemContainer itemContainer){
+        //Create a group for the rectangle and text
+        Group group = new Group();
+        //Create the rectangle for the item container in the border pane
+        Rectangle rectangle = new Rectangle();
+        rectangle.setX(Double.parseDouble(itemContainer.getLocationX()));
+        rectangle.setY(Double.parseDouble(itemContainer.getLocationY()));
+        rectangle.setWidth(Double.parseDouble(itemContainer.getLength()));
+        rectangle.setHeight(Double.parseDouble(itemContainer.getWidth()));
+        rectangle.setFill(null);
+        rectangle.setStroke(Color.RED);
+        Text text = new Text(itemContainer.getName());
+        text.setFill(Color.BLACK);
+        //Set the position of the text
+        text.setX(Double.parseDouble(itemContainer.getLocationX()) + 5);
+        text.setY(Double.parseDouble(itemContainer.getLocationY()) + 15);
+        //Add the rectangle and text to the group
+        group.getChildren().addAll(rectangle, text);
+        visualPane.getChildren().add(group);
+        //Add the group to the group map
+        groupMap.put(itemContainer.getName(), group);
+    }
+    //Overloading DrawRectangle method to draw the rectangles that takes item as a parameter
+    public void DrawRectangle(Item item){
+        //Create a group for the rectangle and text
+        Group group = new Group();
+        //Create the rectangle for the item container in the border pane
+        Rectangle rectangle = new Rectangle();
+        rectangle.setX(Double.parseDouble(item.getLocationX()));
+        rectangle.setY(Double.parseDouble(item.getLocationY()));
+        rectangle.setWidth(Double.parseDouble(item.getLength()));
+        rectangle.setHeight(Double.parseDouble(item.getWidth()));
+        rectangle.setFill(null);
+        rectangle.setStroke(Color.RED);
+        Text text = new Text(item.getName());
+        text.setFill(Color.BLACK);
+        //Set the position of the text
+        text.setX(Double.parseDouble(item.getLocationX()) + 5);
+        text.setY(Double.parseDouble(item.getLocationY()) + 15);
+        //Add the rectangle and text to the group
+        group.getChildren().addAll(rectangle, text);
+        visualPane.getChildren().add(group);
+        //Add the group to the group map
+        groupMap.put(item.getName(), group);
+    }
+    //Method to delete the rectangles that takes itemContainer as a parameter
+    public void deleteRectangle(String name) {
+        Group group = groupMap.get(name);
+        if (group != null) {
+            visualPane.getChildren().remove(group);
+            groupMap.remove(name);
+        }
+    }
+    //Method to update the rectangles when itemContainer or item is changed
+    public void updateRectangle(String name) {
+        Group group = groupMap.get(name);
+        if (group != null) {
+            //Retrieve either the itemContainer or item from the containerMap
+            ItemContainer itemContainer = containerMap.get(name);
+            if (itemContainer != null) {
+                Rectangle rectangle = (Rectangle) group.getChildren().get(0);
+                Text text = (Text) group.getChildren().get(1);
+                //Update the rectangle
+                rectangle.setX(Double.parseDouble(itemContainer.getLocationX()));
+                rectangle.setY(Double.parseDouble(itemContainer.getLocationY()));
+                rectangle.setWidth(Double.parseDouble(itemContainer.getLength()));
+                rectangle.setHeight(Double.parseDouble(itemContainer.getWidth()));
+                //Update the text
+                text.setText(itemContainer.getName());
+                text.setX(Double.parseDouble(itemContainer.getLocationX()) + 5);
+                text.setY(Double.parseDouble(itemContainer.getLocationY()) + 15);
+                //Update the group
+                group.getChildren().set(0, rectangle);
+                group.getChildren().set(1, text);
+            }
+        }
+    }
+    //Method to animate the drone to the selected item
+    public void droneAnimation(ActionEvent event) {
+        TreeItem<String> selectedItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            String itemName = selectedItem.getValue();
+            ItemContainer selectedContainer = containerMap.get(itemName);
+            if (selectedContainer != null) {
+                //Stop any ongoing animation
+                droneImage.getTransforms().clear();
+                double centerX = Double.parseDouble(selectedContainer.getLocationX()) + Double.parseDouble(selectedContainer.getLength()) / 2 - 25;
+                double centerY = Double.parseDouble(selectedContainer.getLocationY()) + Double.parseDouble(selectedContainer.getWidth()) / 2 - 25;
+                move(centerX, centerY);
+            }
+        }
+    }
+    //Method to animate the drone to the home position
+    public void homeAnimation(ActionEvent event) {
+        double homeX = Double.parseDouble(containerMap.get("Drone Box").getLocationX()) + 15;
+        double homeY = Double.parseDouble(containerMap.get("Drone Box").getLocationY()) + 15;
+        move(homeX, homeY);
+    }
+    //Method to scan the whole farm
+    public void StartScanAnimation(ActionEvent event) {
+        // Send the drone to the top left corner
+        move(0, 0);
+    }
+    //Method to move the drone to the next position in the scan
+    public void move(double x, double y) {
+        //Get the current position of the drone
+        double currentX = droneImage.getLayoutX();
+        double currentY = droneImage.getLayoutY();
+        //Calculate the translation relative to the current position
+        double translateX = x - currentX;
+        double translateY = y - currentY;
+        //Create the translation animation
+        TranslateTransition translate = new TranslateTransition(Duration.seconds(1), droneImage);
+        translate.setDelay(Duration.seconds(1));
+        translate.setToX(translateX);
+        translate.setToY(translateY);
+        //Rotate the drone
+        RotateTransition rotate = new RotateTransition(Duration.seconds(1), droneImage);
+        rotate.setByAngle(360);
+        rotate.setCycleCount(4);
+        rotate.setInterpolator(Interpolator.LINEAR);
+        //Sequentially play the translation and rotation
+        ParallelTransition parallel = new ParallelTransition(rotate, translate);
+        parallel.play();
     }
 }

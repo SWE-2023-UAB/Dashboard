@@ -80,4 +80,12 @@ public class ItemContainer {
     public Item getItemFromMap(String queryName){
         return itemsMap.get(queryName);
     }
+
+    public void removeItemFromMap(String queryName){
+        itemsMap.remove(queryName);
+    }
+
+    public HashMap<String, Item> getItemsMap() {
+        return itemsMap;
+    }
 }
