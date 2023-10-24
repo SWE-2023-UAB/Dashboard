@@ -262,7 +262,7 @@ public class Controller implements Initializable {
             case "Change Name" -> {
                 //Change the name of the current container item WIP
                 try {
-                    TreeItem curr = (TreeItem) treeView.getSelectionModel().getSelectedItem();
+                    TreeItem<String> curr = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
                     //Check if selected item is null, not command center, and not Farm
                     if (curr != null && !curr.getValue().equals("Command Center") && !curr.getValue().equals("Farm")) {
                         //loading name change popup
@@ -279,20 +279,42 @@ public class Controller implements Initializable {
                             String newName = changeNameController.getNewName();
                             //creating a copy of the original item for updating
                             ItemContainer updatedContainer = containerMap.get(curr.getValue());
-                            Group updatedGroup = groupMap.get(curr.getValue());
-                            //Removing old instance
-                            containerMap.remove(curr.getValue());
-                            groupMap.remove(curr.getValue());
-                            //updating name and setting it in tree node
-                            updatedContainer.setName(newName);
-                            //inserting new version into hashmap
-                            containerMap.put(updatedContainer.getName(), updatedContainer);
-                            groupMap.put(updatedContainer.getName(), updatedGroup);
-                            curr.setValue(newName);
-                            //print out to console to check if it worked
-                            System.out.println("New Name: " + containerMap.get(curr.getValue()).getName());
-                            //updating rectangle
-                            updateRectangle(updatedContainer.getName());
+                            if (updatedContainer != null){
+                                Group updatedGroup = groupMap.get(curr.getValue());
+                                //Removing old instance
+                                containerMap.remove(curr.getValue());
+                                groupMap.remove(curr.getValue());
+                                //updating name and setting it in tree node
+                                updatedContainer.setName(newName);
+                                //inserting new version into hashmap
+                                containerMap.put(updatedContainer.getName(), updatedContainer);
+                                groupMap.put(updatedContainer.getName(), updatedGroup);
+                                curr.setValue(newName);
+                                //print out to console to check if it worked
+                                System.out.println("New Name: " + containerMap.get(curr.getValue()).getName());
+                                //updating rectangle
+                                updateRectangle(updatedContainer.getName());
+                            } else {
+                                String itemName = curr.getParent().getValue();
+                                ItemContainer container = containerMap.get(itemName);
+                                if (container != null){
+                                    Item item = container.getItemFromMap(itemName);
+                                    if (item != null){
+                                        Group updatedGroup = groupMap.get(curr.getValue());
+                                        //Removing old instance
+                                        groupMap.remove(curr.getValue());
+                                        //updating name and setting it in tree node
+                                        updatedContainer.setName(item.getName());
+                                        //inserting new version into hashmap
+                                        groupMap.put(item.getName(), updatedGroup);
+                                        curr.setValue(newName);
+                                        //print out to console to check if it worked
+                                        System.out.println("New Name: " + containerMap.get(curr.getValue()).getName());
+                                        //updating rectangle
+                                        updateRectangle(updatedContainer.getName());
+                                    }
+                                }
+                            }
                         }
                     }
                 } catch (Exception e) {
