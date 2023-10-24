@@ -508,8 +508,76 @@ public class Controller implements Initializable {
     }
     //Method to scan the whole farm
     public void StartScanAnimation(ActionEvent event) {
-        // Send the drone to the top left corner
-        move(0, 0);
+        double currentX = droneImage.getLayoutX();
+        double currentY = droneImage.getLayoutY();
+
+        // Move to (0,0) from starting position
+        TranslateTransition moveHome = new TranslateTransition(Duration.seconds(3), droneImage);
+        move(0,0);
+
+        double fullX = 720;
+        double someY = 100;
+        double timeX = 3;
+        double timeY = 1;
+
+        // Set an event handler to start the next transition when the first one is finished
+        moveHome.setOnFinished(e -> {
+            // After the drone is at (0, 0), create another transition to move it to (350, 0)
+            TranslateTransition moveFWD = new TranslateTransition(Duration.seconds(timeX), droneImage);
+            moveFWD.setByX(fullX);
+            moveFWD.play();
+            moveFWD.setOnFinished(f -> {
+                TranslateTransition moveDWN = new TranslateTransition(Duration.seconds(timeY), droneImage);
+                moveDWN.setByY(someY);
+                moveDWN.play();
+                moveDWN.setOnFinished(g -> {
+                    TranslateTransition moveBCK = new TranslateTransition(Duration.seconds(timeX), droneImage);
+                    moveBCK.setByX(-fullX);
+                    moveBCK.play();
+                    moveBCK.setOnFinished(h ->{
+                        TranslateTransition moveDWN02 = new TranslateTransition(Duration.seconds(timeY), droneImage);
+                        moveDWN02.setByY(someY);
+                        moveDWN02.play();
+                        moveDWN02.setOnFinished(i -> {
+                            TranslateTransition moveFWD02 = new TranslateTransition(Duration.seconds(timeX), droneImage);
+                            moveFWD02.setByX(fullX);
+                            moveFWD02.play();
+                            moveFWD02.setOnFinished(j -> {
+                                TranslateTransition moveDWN03 = new TranslateTransition(Duration.seconds(timeY), droneImage);
+                                moveDWN03.setByY(someY);
+                                moveDWN03.play();
+                                moveDWN03.setOnFinished(k -> {
+                                    TranslateTransition moveBCK02 = new TranslateTransition(Duration.seconds(timeX), droneImage);
+                                    moveBCK02.setByX(-fullX);
+                                    moveBCK02.play();
+                                    moveBCK02.setOnFinished(l ->{
+                                        TranslateTransition moveDWN04 = new TranslateTransition(Duration.seconds(timeY), droneImage);
+                                        moveDWN04.setByY(someY);
+                                        moveDWN04.play();
+                                        moveDWN04.setOnFinished(m -> {
+                                            TranslateTransition moveFWD03 = new TranslateTransition(Duration.seconds(timeX), droneImage);
+                                            moveFWD03.setByX(fullX);
+                                            moveFWD03.play();
+                                            moveFWD03.setOnFinished(n -> {
+                                                TranslateTransition moveDWN05 = new TranslateTransition(Duration.seconds(timeY), droneImage);
+                                                moveDWN05.setByY(someY);
+                                                moveDWN05.play();
+                                                moveDWN05.setOnFinished(o -> {
+                                                    TranslateTransition moveBCK03 = new TranslateTransition(Duration.seconds(timeX), droneImage);
+                                                    moveBCK03.setByX(-fullX);
+                                                    moveBCK03.play();
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+        moveHome.play();
     }
     //Method to move the drone to the next position in the scan
     public void move(double x, double y) {
@@ -527,7 +595,7 @@ public class Controller implements Initializable {
         //Rotate the drone
         RotateTransition rotate = new RotateTransition(Duration.seconds(1), droneImage);
         rotate.setByAngle(360);
-        rotate.setCycleCount(4);
+        rotate.setCycleCount(3);
         rotate.setInterpolator(Interpolator.LINEAR);
         //Sequentially play the translation and rotation
         ParallelTransition parallel = new ParallelTransition(rotate, translate);
