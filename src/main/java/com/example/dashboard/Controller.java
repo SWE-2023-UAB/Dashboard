@@ -294,25 +294,23 @@ public class Controller implements Initializable {
                                 System.out.println("New Name: " + containerMap.get(curr.getValue()).getName());
                                 //updating rectangle
                                 updateRectangle(updatedContainer.getName());
-                            } else {
-                                String itemName = curr.getParent().getValue();
-                                ItemContainer container = containerMap.get(itemName);
-                                if (container != null){
-                                    Item item = container.getItemFromMap(itemName);
-                                    if (item != null){
-                                        Group updatedGroup = groupMap.get(curr.getValue());
-                                        //Removing old instance
-                                        groupMap.remove(curr.getValue());
-                                        //updating name and setting it in tree node
-                                        updatedContainer.setName(item.getName());
-                                        //inserting new version into hashmap
-                                        groupMap.put(item.getName(), updatedGroup);
-                                        curr.setValue(newName);
-                                        //print out to console to check if it worked
-                                        System.out.println("New Name: " + containerMap.get(curr.getValue()).getName());
-                                        //updating rectangle
-                                        updateRectangle(updatedContainer.getName());
-                                    }
+                            }
+                            //Change name of the item
+                            else {
+                                Item updatedItem = containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue());
+                                if (updatedItem != null) {
+                                    Group updatedGroup = groupMap.get(curr.getValue());
+                                    //Removing old instance
+                                    containerMap.get(curr.getParent().getValue()).removeItemFromMap(curr.getValue());
+                                    groupMap.remove(curr.getValue());
+                                    //updating name and setting it in tree node
+                                    updatedItem.setName(newName);
+                                    //inserting new version into hashmap
+                                    containerMap.get(curr.getParent().getValue()).addItemToMap(updatedItem.getName(), updatedItem);
+                                    groupMap.put(updatedItem.getName(), updatedGroup);
+                                    curr.setValue(newName);
+                                    //updating rectangle
+                                    updateRectangle(updatedItem.getName());
                                 }
                             }
                         }
@@ -481,11 +479,12 @@ public class Controller implements Initializable {
     //Method to update the rectangles when itemContainer or item is changed
     public void updateRectangle(String name) {
         Group group = groupMap.get(name);
+        TreeItem<String> curr = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
         if (group != null) {
             //Retrieve either the itemContainer or item from the containerMap
-            ItemContainer itemContainer = containerMap.get(name);
-            System.out.println("HEY YOU GUYS: "+ itemContainer.getName());
+            ItemContainer itemContainer = containerMap.get(curr.getValue());
             if (itemContainer != null) {
+                System.out.println("Run");
                 Rectangle rectangle = (Rectangle) group.getChildren().get(0);
                 Text text = (Text) group.getChildren().get(1);
                 //Update the rectangle
@@ -495,12 +494,29 @@ public class Controller implements Initializable {
                 rectangle.setHeight(Double.parseDouble(itemContainer.getWidth()));
                 //Update the text
                 text.setText(itemContainer.getName());
-                System.out.println("TEXT NAME: "+ text.getText());
                 text.setX(Double.parseDouble(itemContainer.getLocationX()) + 5);
                 text.setY(Double.parseDouble(itemContainer.getLocationY()) + 15);
                 //Update the group
                 group.getChildren().set(0, rectangle);
                 group.getChildren().set(1, text);
+            } else {
+                Item item = containerMap.get(curr.getParent().getValue()).getItemFromMap(name);
+                if (item != null) {
+                    Rectangle rectangle = (Rectangle) group.getChildren().get(0);
+                    Text text = (Text) group.getChildren().get(1);
+                    //Update the rectangle
+                    rectangle.setX(Double.parseDouble(item.getLocationX()));
+                    rectangle.setY(Double.parseDouble(item.getLocationY()));
+                    rectangle.setWidth(Double.parseDouble(item.getLength()));
+                    rectangle.setHeight(Double.parseDouble(item.getWidth()));
+                    //Update the text
+                    text.setText(item.getName());
+                    text.setX(Double.parseDouble(item.getLocationX()) + 5);
+                    text.setY(Double.parseDouble(item.getLocationY()) + 15);
+                    //Update the group
+                    group.getChildren().set(0, rectangle);
+                    group.getChildren().set(1, text);
+                }
             }
         }
         else{
