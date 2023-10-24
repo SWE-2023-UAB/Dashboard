@@ -279,17 +279,20 @@ public class Controller implements Initializable {
                             String newName = changeNameController.getNewName();
                             //creating a copy of the original item for updating
                             ItemContainer updatedContainer = containerMap.get(curr.getValue());
+                            Group updatedGroup = groupMap.get(curr.getValue());
                             //Removing old instance
                             containerMap.remove(curr.getValue());
+                            groupMap.remove(curr.getValue());
                             //updating name and setting it in tree node
                             updatedContainer.setName(newName);
                             //inserting new version into hashmap
                             containerMap.put(updatedContainer.getName(), updatedContainer);
+                            groupMap.put(updatedContainer.getName(), updatedGroup);
                             curr.setValue(newName);
                             //print out to console to check if it worked
                             System.out.println("New Name: " + containerMap.get(curr.getValue()).getName());
                             //updating rectangle
-                            updateRectangle(curr.getValue().toString());
+                            updateRectangle(updatedContainer.getName());
                         }
                     }
                 } catch (Exception e) {
@@ -459,6 +462,7 @@ public class Controller implements Initializable {
         if (group != null) {
             //Retrieve either the itemContainer or item from the containerMap
             ItemContainer itemContainer = containerMap.get(name);
+            System.out.println("HEY YOU GUYS: "+ itemContainer.getName());
             if (itemContainer != null) {
                 Rectangle rectangle = (Rectangle) group.getChildren().get(0);
                 Text text = (Text) group.getChildren().get(1);
@@ -469,12 +473,16 @@ public class Controller implements Initializable {
                 rectangle.setHeight(Double.parseDouble(itemContainer.getWidth()));
                 //Update the text
                 text.setText(itemContainer.getName());
+                System.out.println("TEXT NAME: "+ text.getText());
                 text.setX(Double.parseDouble(itemContainer.getLocationX()) + 5);
                 text.setY(Double.parseDouble(itemContainer.getLocationY()) + 15);
                 //Update the group
                 group.getChildren().set(0, rectangle);
                 group.getChildren().set(1, text);
             }
+        }
+        else{
+            System.out.println("Uh oh spagghetti os");
         }
     }
     //Method to animate the drone to the selected item
