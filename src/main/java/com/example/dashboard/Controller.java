@@ -497,6 +497,19 @@ public class Controller implements Initializable {
                 double centerX = Double.parseDouble(selectedContainer.getLocationX()) + Double.parseDouble(selectedContainer.getLength()) / 2 - 25;
                 double centerY = Double.parseDouble(selectedContainer.getLocationY()) + Double.parseDouble(selectedContainer.getWidth()) / 2 - 25;
                 move(centerX, centerY);
+            } else {
+                String containerName = selectedItem.getParent().getValue();
+                ItemContainer container = containerMap.get(containerName);
+                if (container != null) {
+                    Item item = container.getItemFromMap(itemName);
+                    if (item != null) {
+                        //Stop any ongoing animation
+                        droneImage.getTransforms().clear();
+                        double centerX = Double.parseDouble(item.getLocationX()) + Double.parseDouble(item.getLength()) / 2 - 25;
+                        double centerY = Double.parseDouble(item.getLocationY()) + Double.parseDouble(item.getWidth()) / 2 - 25;
+                        move(centerX, centerY);
+                    }
+                }
             }
         }
     }
