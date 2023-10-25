@@ -321,11 +321,10 @@ public class Controller implements Initializable {
             }
             case "Change Price" -> {
                 try {
-                    TreeItem curr = (TreeItem) treeView.getSelectionModel().getSelectedItem();
+                    TreeItem<String> curr = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
                     //Check if selected item is null, not command center, and not Farm
                     if (curr != null && !curr.getValue().equals("Command Center") && !curr.getValue().equals("Farm")) {
                         //loading price change popup
-                        System.out.println("Old price: " + containerMap.get(curr.getValue()).getPrice());
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("change-price.fxml"));
                         DialogPane icDialogue = fxmlLoader.load();
                         Dialog<ButtonType> dialog = new Dialog<>();
@@ -337,9 +336,30 @@ public class Controller implements Initializable {
                             ChangePriceController changePriceController = fxmlLoader.getController();
                             //getting new price
                             String newPrice = changePriceController.getNewPrice();
-                            //updating price with new price
-                            containerMap.get(curr.getValue()).setPrice(newPrice);
-                            System.out.println("New Price: " + containerMap.get(curr.getValue()).getPrice());
+                            ItemContainer updatedContainer = containerMap.get(curr.getValue());
+
+
+                            if (updatedContainer != null){
+                                //updating price with new price
+                                containerMap.get(curr.getValue()).setPrice(newPrice);
+                                System.out.println("New Price: " + containerMap.get(curr.getValue()).getPrice());
+                            }
+                            else {
+                                Item updatedItem = containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue());
+                                if (updatedItem != null) {
+                                    Group updatedGroup = groupMap.get(curr.getValue());
+                                    //Removing old instance
+                                    containerMap.get(curr.getParent().getValue()).removeItemFromMap(curr.getValue());
+                                    groupMap.remove(curr.getValue());
+                                    //updating name and setting it in tree node
+                                    updatedItem.setPrice(newPrice);
+                                    //inserting new version into hashmap
+                                    containerMap.get(curr.getParent().getValue()).addItemToMap(updatedItem.getPrice(), updatedItem);
+                                    groupMap.put(updatedItem.getPrice(), updatedGroup);
+                                    curr.setValue(newPrice);
+                                }
+                            }
+
                         }
                     }
                 } catch (Exception e) {
@@ -348,30 +368,49 @@ public class Controller implements Initializable {
             }
             case "Change Location" -> {
                 try {
-                    TreeItem curr = (TreeItem) treeView.getSelectionModel().getSelectedItem();
+                    TreeItem<String> curr = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
                     //Check if selected item is null, not command center, and not Farm
                     if (curr != null && !curr.getValue().equals("Command Center") && !curr.getValue().equals("Farm")) {
                         //loading up the coordinates popup
-                        System.out.println("Old Coords: (" + containerMap.get(curr.getValue()).getLocationX()
-                                + ", (" + containerMap.get(curr.getValue()).getLocationY() + ")");
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("change-location.fxml"));
                         DialogPane icDialogue = fxmlLoader.load();
                         Dialog<ButtonType> dialog = new Dialog<>();
                         dialog.setDialogPane(icDialogue);
                         dialog.setTitle("Change Location");
                         Optional<ButtonType> clickedButton = dialog.showAndWait();
+
                         if (clickedButton.get() == ButtonType.FINISH) {
                             ChangeLocationController changeLocationController = fxmlLoader.getController();
                             //getting new x and y coordinates.
                             String newX = changeLocationController.getNewXCoord();
                             String newY = changeLocationController.getNewYCoord();
-                            //updating x and y
-                            containerMap.get(curr.getValue()).setLocationX(newX);
-                            containerMap.get(curr.getValue()).setLocationY(newY);
-                            System.out.println("New Coords: (" + containerMap.get(curr.getValue()).getLocationX()
-                                    + ", (" + containerMap.get(curr.getValue()).getLocationY() + ")");
-                            //updating rectangle
-                            updateRectangle(curr.getValue().toString());
+
+                            ItemContainer updatedContainer = containerMap.get(curr.getValue());
+
+                            if (updatedContainer != null){
+                                //updating x and y
+                                containerMap.get(curr.getValue()).setLocationX(newX);
+                                containerMap.get(curr.getValue()).setLocationY(newY);
+                                System.out.println("New Coords: (" + containerMap.get(curr.getValue()).getLocationX()
+                                        + ", (" + containerMap.get(curr.getValue()).getLocationY() + ")");
+                                //updating rectangle
+                                updateRectangle(curr.getValue().toString());
+                            }
+                            else {
+                                Item updatedItem = containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue());
+                                if (updatedItem != null){
+                                    Group updatedGroup = groupMap.get(curr.getValue());
+                                    containerMap.get(curr.getParent().getValue()).removeItemFromMap(curr.getValue());
+                                    groupMap.remove(curr.getValue());
+                                    updatedItem.setLocationX(newX);
+                                    containerMap.get(curr.getParent().getValue()).addItemToMap(updatedItem.getLocationX(), updatedItem);
+                                    groupMap.put(updatedItem.getLocationX(), updatedGroup);
+                                    updatedItem.setLocationY(newY);
+                                    containerMap.get(curr.getParent().getValue()).addItemToMap(updatedItem.getLocationY(), updatedItem);
+                                    groupMap.put(updatedItem.getLocationY(), updatedGroup);
+                                    updateRectangle(curr.getValue().toString());
+                                }
+                            }
                         }
                     }
                 } catch (Exception e) {
