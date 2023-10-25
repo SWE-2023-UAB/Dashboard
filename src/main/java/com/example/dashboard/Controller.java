@@ -126,7 +126,7 @@ public class Controller implements Initializable {
                 if (selectedItem != null && !selectedItem.getValue().equals("Command Center") && containerMap.get(selectedItem.getValue()) != null) {
                     //Error handling for item containers not being added to containers.
                     if (!(containerMap.get(selectedItem.getValue()) instanceof ItemContainer)) {
-                        throw new RuntimeException("Item containers can only be added to containers.");
+                        throw new RuntimeException("Item containers can only be added to containers!.");
                     }
                     //Make Dialog Pop Up for Item Container
                     try {
@@ -199,6 +199,10 @@ public class Controller implements Initializable {
                 TreeItem<String> selectedItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
                 //Check if selected item is null, not command center, and that is an ItemContainer object.
                 if (selectedItem != null && !selectedItem.getValue().equals("Command Center") && containerMap.get(selectedItem.getValue()) != null) {
+                    //handling for items.
+                    if (!(containerMap.get(selectedItem.getParent().getValue()).getItemFromMap(selectedItem.getValue()) instanceof Item)) {
+                        throw new RuntimeException("Items cannot have items as parents!");
+                    }
                     try {
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("item.fxml"));
                         DialogPane icDialogue = fxmlLoader.load();
@@ -394,21 +398,16 @@ public class Controller implements Initializable {
                                 System.out.println("New Coords: (" + containerMap.get(curr.getValue()).getLocationX()
                                         + ", (" + containerMap.get(curr.getValue()).getLocationY() + ")");
                                 //updating rectangle
-                                updateRectangle(curr.getValue().toString());
+                                updateRectangle(curr.getValue());
                             }
                             else {
                                 Item updatedItem = containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue());
                                 if (updatedItem != null){
-                                    Group updatedGroup = groupMap.get(curr.getValue());
-                                    containerMap.get(curr.getParent().getValue()).removeItemFromMap(curr.getValue());
-                                    groupMap.remove(curr.getValue());
-                                    updatedItem.setLocationX(newX);
-                                    containerMap.get(curr.getParent().getValue()).addItemToMap(updatedItem.getLocationX(), updatedItem);
-                                    groupMap.put(updatedItem.getLocationX(), updatedGroup);
-                                    updatedItem.setLocationY(newY);
-                                    containerMap.get(curr.getParent().getValue()).addItemToMap(updatedItem.getLocationY(), updatedItem);
-                                    groupMap.put(updatedItem.getLocationY(), updatedGroup);
-                                    updateRectangle(curr.getValue().toString());
+                                    //you don't gotta update the group, group update is only necessary for name changes.
+                                    containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setLocationX(newX);
+                                    containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setLocationY(newY);
+                                    //rectangle updated
+                                    updateRectangle(curr.getValue());
                                 }
                             }
                         }
@@ -419,7 +418,7 @@ public class Controller implements Initializable {
             }
             case "Change Dimensions" -> {
                 try {
-                    TreeItem curr = (TreeItem) treeView.getSelectionModel().getSelectedItem();
+                    TreeItem<String> curr = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
                     //Check if selected item is null, not command center, and not Farm
                     if (curr != null && !curr.getValue().equals("Command Center") && !curr.getValue().equals("Farm")) {
                         //loading up the dimensions popup
@@ -439,16 +438,33 @@ public class Controller implements Initializable {
                             String newWidth = changeDimensionsController.getNewWidth();
                             String newHeight = changeDimensionsController.getNewHeight();
 
-                            //updating dimensions
-                            containerMap.get(curr.getValue()).setLength(newLength);
-                            containerMap.get(curr.getValue()).setWidth(newWidth);
-                            containerMap.get(curr.getValue()).setHeight(newHeight);
+                            //updating dimensions of container
+                            if(containerMap.get(curr.getValue()) != null){
+                                containerMap.get(curr.getValue()).setLength(newLength);
+                                containerMap.get(curr.getValue()).setWidth(newWidth);
+                                containerMap.get(curr.getValue()).setHeight(newHeight);
+                                System.out.println("New Dimensions: " + containerMap.get(curr.getValue()).getLength()
+                                        + " x " + containerMap.get(curr.getValue()).getWidth() + " x "
+                                        + containerMap.get(curr.getValue()).getHeight());
+                                //updating rectangle
+                                updateRectangle(curr.getValue().toString());
+                            }
 
-                            System.out.println("New Dimensions: " + containerMap.get(curr.getValue()).getLength()
-                                    + " x " + containerMap.get(curr.getValue()).getWidth() + " x "
-                                    + containerMap.get(curr.getValue()).getHeight());
-                            //updating rectangle
-                            updateRectangle(curr.getValue().toString());
+                            else{
+                                //not too sure why this is here, since technically it wastes memory, but it's just used for checks
+                                Item updatedItem = containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue());
+                                if (updatedItem != null){
+                                    //you don't gotta update the group, group update is only necessary for name changes.
+                                    containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setWidth(newWidth);
+                                    containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setLength(newLength);
+                                    containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setHeight(newHeight);
+                                    //rectangle updated
+                                    System.out.println("New Dimensions: " + containerMap.get(curr.getValue()).getLength()
+                                            + " x " + containerMap.get(curr.getValue()).getWidth() + " x "
+                                            + containerMap.get(curr.getValue()).getHeight());
+                                    updateRectangle(curr.getValue());
+                                }
+                            }
                         }
                     }
                 } catch (Exception e) {
