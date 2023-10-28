@@ -8,11 +8,20 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-//Override method for launch
 public class DashApplication extends Application {
+    private static DashApplication instance;
+
+    public DashApplication() {}
+
+    public static synchronized DashApplication getInstance() {
+        if (instance == null) {
+            instance = new DashApplication();
+        }
+        return instance;
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
-        // Load main dashboard
         FXMLLoader fxmlLoader = new FXMLLoader(DashApplication.class.getResource("dash-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1100, 600);
         stage.setTitle("Dashboard");
@@ -20,8 +29,12 @@ public class DashApplication extends Application {
         stage.show();
     }
 
-    //Main Method
+    // Main Method
     public static void main(String[] args) {
-        launch();
+        getInstance().launchApp(args);
+    }
+
+    private void launchApp(String[] args) {
+        launch(args);
     }
 }

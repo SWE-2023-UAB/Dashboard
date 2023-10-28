@@ -623,8 +623,8 @@ public class Controller implements Initializable {
 
         double fullX = 720;
         double someY = 100;
-        double timeX = 3;
-        double timeY = 1;
+        double timeX = 1.5;
+        double timeY = 0.5;
 
         // Set an event handler to start the next transition when the first one is finished
         moveHome.setOnFinished(e -> {
