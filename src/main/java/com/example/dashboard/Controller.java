@@ -76,6 +76,8 @@ public class Controller implements Initializable {
         treeView.setRoot(rootItem);
         //making farm an item in the map
         containerMap.put(rootItem.getValue(), new ItemContainer(rootItem.getValue(), "", "0", "0", "800", "400" , ""));
+        //selecting farm in tree view by default
+        treeView.getSelectionModel().select(rootItem);
 
 
         //Add default item containers and items
@@ -200,37 +202,37 @@ public class Controller implements Initializable {
                 //Check if selected item is null, not command center, and that is an ItemContainer object.
                 if (selectedItem != null && !selectedItem.getValue().equals("Command Center") && containerMap.get(selectedItem.getValue()) != null) {
                     //handling for items.
-                    if (!(containerMap.get(selectedItem.getParent().getValue()).getItemFromMap(selectedItem.getValue()) instanceof Item)) {
+                    if (selectedItem.getParent() != null && containerMap.get(selectedItem.getParent().getValue()).getItemFromMap(selectedItem.getValue()) instanceof Item) {
                         throw new RuntimeException("Items cannot have items as parents!");
                     }
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("item.fxml"));
-                        DialogPane icDialogue = fxmlLoader.load();
-                        Dialog<ButtonType> dialog = new Dialog<>();
-                        dialog.setDialogPane(icDialogue);
-                        dialog.setTitle("Item");
-                        Optional<ButtonType> clickedButton = dialog.showAndWait();
-                        //Submit dialogue pop up
-                        if (clickedButton.get() == ButtonType.FINISH) {
-                            System.out.println("Finished Pressed");
-                            IController iController = fxmlLoader.getController();
-                            //Create leaf node
-                            TreeItem<String> leaf = new TreeItem<>(iController.item.getName());
-                            //Check which item is currently selected in hierarchy
-                            //add leaf node to item currently selected.
-                            selectedItem.getChildren().addAll(leaf);
-                            System.out.println(selectedItem.getValue());
-                            //Add item to Hashmap with name as key and object as value
-                            System.out.println(containerMap.get(selectedItem.getValue()));
-                            containerMap.get(selectedItem.getValue()).addItemToMap(iController.item.getName(), iController.item);
-                            System.out.println(containerMap.get(selectedItem.getValue()).getItemFromMap(iController.item.getName()));
-                            //Draw rectangle for item
-                            DrawRectangle(iController.item);
+                        try {
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("item.fxml"));
+                            DialogPane icDialogue = fxmlLoader.load();
+                            Dialog<ButtonType> dialog = new Dialog<>();
+                            dialog.setDialogPane(icDialogue);
+                            dialog.setTitle("Item");
+                            Optional<ButtonType> clickedButton = dialog.showAndWait();
+                            //Submit dialogue pop up
+                            if (clickedButton.get() == ButtonType.FINISH) {
+                                System.out.println("Finished Pressed");
+                                IController iController = fxmlLoader.getController();
+                                //Create leaf node
+                                TreeItem<String> leaf = new TreeItem<>(iController.item.getName());
+                                //Check which item is currently selected in hierarchy
+                                //add leaf node to item currently selected.
+                                selectedItem.getChildren().addAll(leaf);
+                                System.out.println(selectedItem.getValue());
+                                //Add item to Hashmap with name as key and object as value
+                                System.out.println(containerMap.get(selectedItem.getValue()));
+                                containerMap.get(selectedItem.getValue()).addItemToMap(iController.item.getName(), iController.item);
+                                System.out.println(containerMap.get(selectedItem.getValue()).getItemFromMap(iController.item.getName()));
+                                //Draw rectangle for item
+                                DrawRectangle(iController.item);
+                            }
+                        } catch (IOException e) {
+                            // Handle the IOException, e.g., by printing an error message
+                            e.printStackTrace();
                         }
-                    } catch (IOException e) {
-                        // Handle the IOException, e.g., by printing an error message
-                        e.printStackTrace();
-                    }
                 }
             }
 
@@ -351,16 +353,8 @@ public class Controller implements Initializable {
                             else {
                                 Item updatedItem = containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue());
                                 if (updatedItem != null) {
-                                    Group updatedGroup = groupMap.get(curr.getValue());
-                                    //Removing old instance
-                                    containerMap.get(curr.getParent().getValue()).removeItemFromMap(curr.getValue());
-                                    groupMap.remove(curr.getValue());
-                                    //updating name and setting it in tree node
-                                    updatedItem.setPrice(newPrice);
-                                    //inserting new version into hashmap
-                                    containerMap.get(curr.getParent().getValue()).addItemToMap(updatedItem.getPrice(), updatedItem);
-                                    groupMap.put(updatedItem.getPrice(), updatedGroup);
-                                    curr.setValue(newPrice);
+                                    //updating price
+                                    containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setPrice(newPrice);
                                 }
                             }
 
