@@ -589,7 +589,7 @@ public class Controller implements Initializable {
     //Method to animate the drone to the selected item
     public void droneAnimation(ActionEvent event) {
         TreeItem<String> selectedItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
-        if (selectedItem != null) {
+        if (selectedItem != null && !selectedItem.getValue().equals("Farm")) {
             String itemName = selectedItem.getValue();
             ItemContainer selectedContainer = containerMap.get(itemName);
             if (selectedContainer != null) {
