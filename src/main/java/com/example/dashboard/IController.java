@@ -17,7 +17,6 @@ public class IController {
     public TextField icWidth;
     public TextField icHeight;
 
-    public Button icButton;
 
     String name, price, x, y, length, width, height;
 

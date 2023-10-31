@@ -1,5 +1,6 @@
 package com.example.dashboard;
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,6 +30,7 @@ public class Controller implements Initializable {
     TreeItem<String> rootItem = new TreeItem<>("Farm");
     //Create hashmap with name as key and object as value
     HashMap<String, ItemContainer> containerMap = new HashMap<String, ItemContainer>();
+    public boolean isGettingItem;
 
     @FXML
     //Show selected item from hierarchy
@@ -48,14 +50,10 @@ public class Controller implements Initializable {
     // Create dropdown for item and itemcontainer
     public ChoiceBox<String> itemContainerBox;
     public ChoiceBox<String> itemBox;
+    public Button submitButton;
     public String[] itemContainerOptions = {
             "Add Item-Container",
-            "Delete Item-Container",
-//            "Add Item",
-//            "Change Name",
-//            "Change Price",
-//            "Change Location",
-//            "Change Dimensions"
+            "Delete Item-Container"
     };
     public String[] itemOptions = {
             "Add Item",
@@ -71,8 +69,24 @@ public class Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         itemBox.getItems().addAll(itemOptions);
         itemContainerBox.getItems().addAll(itemContainerOptions);
-        itemBox.setOnAction(this::GetItemSelection);
-        itemContainerBox.setOnAction(this::GetContainerSelection);
+        itemContainerBox.setOnMouseClicked(event -> {
+            isGettingItem = false;
+            itemBox.getSelectionModel().clearSelection();
+        });
+        itemBox.setOnMouseClicked(event -> {
+            isGettingItem = true;
+            itemContainerBox.getSelectionModel().clearSelection();
+        });
+        submitButton.setOnAction(event ->  {
+            if (isGettingItem) {
+                GetItemSelection(event);
+                itemBox.getSelectionModel().clearSelection();
+            }
+            else {
+                GetContainerSelection(event);
+                itemContainerBox.getSelectionModel().clearSelection();
+            }
+        });
         treeView.setRoot(rootItem);
         //making farm an item in the map
         containerMap.put(rootItem.getValue(), new ItemContainer(rootItem.getValue(), "", "0", "0", "800", "400" , ""));

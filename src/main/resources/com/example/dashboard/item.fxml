@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonType?>
 <?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
@@ -8,8 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<DialogPane prefHeight="331.0" prefWidth="445.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.IController">
+<DialogPane prefHeight="331.0" prefWidth="445.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.IController">
    <content>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
@@ -32,7 +30,6 @@
             <TextField fx:id="icLength" layoutX="109.0" layoutY="185.0" onKeyTyped="#lengthChange" />
             <TextField fx:id="icWidth" layoutX="109.0" layoutY="222.0" onKeyTyped="#widthChange" />
             <TextField fx:id="icHeight" layoutX="109.0" layoutY="255.0" onKeyTyped="#heightChange" />
-            <Button fx:id="icButton" layoutX="321.0" layoutY="255.0" mnemonicParsing="false" onAction="#icClicked" prefHeight="25.0" prefWidth="61.0" text="Submit " />
          </children>
       </AnchorPane>
    </content>
