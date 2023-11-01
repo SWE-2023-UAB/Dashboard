@@ -430,9 +430,6 @@ public class Controller implements Initializable {
                     //Check if selected item is null, not command center, and not Farm
                     if (curr != null && !curr.getValue().equals("Command Center") && !curr.getValue().equals("Farm")) {
                         //loading up the dimensions popup
-                        System.out.println("Old Dimensions: " + containerMap.get(curr.getValue()).getLength()
-                                + " x " + containerMap.get(curr.getValue()).getWidth() + " x "
-                                + containerMap.get(curr.getValue()).getHeight());
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("change-dimensions.fxml"));
                         DialogPane icDialogue = fxmlLoader.load();
                         Dialog<ButtonType> dialog = new Dialog<>();
@@ -467,9 +464,6 @@ public class Controller implements Initializable {
                                     containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setLength(newLength);
                                     containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setHeight(newHeight);
                                     //rectangle updated
-                                    System.out.println("New Dimensions: " + containerMap.get(curr.getValue()).getLength()
-                                            + " x " + containerMap.get(curr.getValue()).getWidth() + " x "
-                                            + containerMap.get(curr.getValue()).getHeight());
                                     updateRectangle(curr.getValue());
                                 }
                             }
