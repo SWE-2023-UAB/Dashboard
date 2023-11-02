@@ -15,6 +15,8 @@ import java.util.ResourceBundle;
 
 //Runs when Dialogue is opened
 public class ICController{
+    //Singleton instance access
+    DashApplication instance = DashApplication.getInstance();
     //Item Container class to define item container objects
     @FXML
     public TextField icName;

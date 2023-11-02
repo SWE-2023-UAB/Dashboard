@@ -8,6 +8,8 @@ import javafx.scene.input.KeyEvent;
 
 //servers the purpose of being the controller for modifying name in change-name.fxml
 public class ChangeNameController {
+    //Singleton instance access
+    DashApplication instance = DashApplication.getInstance();
     //used for changing item/container names
 
     @FXML

@@ -7,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 public class IController {
+    //Singleton instance access
+    DashApplication instance = DashApplication.getInstance();
     //Item  class to define item objects
     @FXML
     public TextField icName;

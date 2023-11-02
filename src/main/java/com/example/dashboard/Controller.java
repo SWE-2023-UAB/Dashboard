@@ -24,6 +24,9 @@ import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 public class Controller implements Initializable {
+    //Singleton instance access
+    DashApplication instance = DashApplication.getInstance();
+
     //Hierarchy ==> TreeView
     public TreeView treeView;
     //Set base Root
@@ -158,12 +161,17 @@ public class Controller implements Initializable {
                             //Run IC-Controller
                             ICController icController = fxmlLoader.getController();
                             //Add item to hierarchy
-                            TreeItem<String> branch = new TreeItem<>(icController.itemC.getName());
-                            selectedItem.getChildren().add(branch);
-                            //Add item to Hashmap with name as key and object as value
-                            containerMap.put(icController.itemC.getName(), icController.itemC);
-                            //Draw rectangle for item container
-                            DrawRectangle(icController.itemC);
+                            if (icController.itemC.getLocationX().isEmpty() || icController.itemC.getLocationY().isEmpty() || icController.itemC.getLength().isEmpty() || icController.itemC.getWidth().isEmpty()){
+                                System.out.println("Missing Params!");
+                            }
+                            else{
+                                //Draw rectangle for item container
+                                TreeItem<String> branch = new TreeItem<>(icController.itemC.getName());
+                                selectedItem.getChildren().add(branch);
+                                //Add item to Hashmap with name as key and object as value
+                                containerMap.put(icController.itemC.getName(), icController.itemC);
+                                DrawRectangle(icController.itemC);
+                            }
                         }
                     } catch (IOException e) {
                         // Handle the IOException
@@ -231,17 +239,24 @@ public class Controller implements Initializable {
                                 System.out.println("Finished Pressed");
                                 IController iController = fxmlLoader.getController();
                                 //Create leaf node
-                                TreeItem<String> leaf = new TreeItem<>(iController.item.getName());
-                                //Check which item is currently selected in hierarchy
-                                //add leaf node to item currently selected.
-                                selectedItem.getChildren().addAll(leaf);
-                                System.out.println(selectedItem.getValue());
-                                //Add item to Hashmap with name as key and object as value
-                                System.out.println(containerMap.get(selectedItem.getValue()));
-                                containerMap.get(selectedItem.getValue()).addItemToMap(iController.item.getName(), iController.item);
-                                System.out.println(containerMap.get(selectedItem.getValue()).getItemFromMap(iController.item.getName()));
-                                //Draw rectangle for item
-                                DrawRectangle(iController.item);
+
+
+                                if (iController.item.getLocationX().isEmpty() || iController.item.getLocationY().isEmpty() || iController.item.getLength().isEmpty() || iController.item.getWidth().isEmpty()){
+                                    System.out.println("Missing Params!");
+                                }
+                                else{
+                                    TreeItem<String> leaf = new TreeItem<>(iController.item.getName());
+                                    //Check which item is currently selected in hierarchy
+                                    //add leaf node to item currently selected.
+                                    selectedItem.getChildren().addAll(leaf);
+                                    System.out.println(selectedItem.getValue());
+                                    //Add item to Hashmap with name as key and object as value
+                                    System.out.println(containerMap.get(selectedItem.getValue()));
+                                    containerMap.get(selectedItem.getValue()).addItemToMap(iController.item.getName(), iController.item);
+                                    System.out.println(containerMap.get(selectedItem.getValue()).getItemFromMap(iController.item.getName()));
+                                    //Draw rectangle for item
+                                    DrawRectangle(iController.item);
+                                }
                             }
                         } catch (IOException e) {
                             // Handle the IOException, e.g., by printing an error message
