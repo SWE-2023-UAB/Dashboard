@@ -9,15 +9,11 @@ import java.util.concurrent.TimeUnit;
 
 import com.example.dashboard.control.DroneController;
 import com.example.dashboard.control.physical.MultiRotorDrone;
-import main.java.surelyhuman.jdrone.util.StreamPlayer;
-import main.java.surelyhuman.jdrone.util.StreamRecorder;
 
 public class TelloDrone extends MultiRotorDrone {
 
 	private final int maxGoto = 500, minGoto = -500, minDist = 20, maxSpeed = 100, minSpeed = 10, maxDegrees = 360, minDegrees = 1;
 	private final int maxDist = maxGoto;
-	private StreamPlayer flightCamera;
-	private StreamRecorder flightRecorder;
 	//private String filePath = "/Users/MasterControlProgram/git/jdrone/src/VideoRecv.mp4";
 
 	/***
@@ -28,8 +24,6 @@ public class TelloDrone extends MultiRotorDrone {
 	 */
 	public TelloDrone() throws SocketException, UnknownHostException, FileNotFoundException {
 		this.controller = new DroneController(9000, 8889, "192.168.10.1");
-		flightCamera = new StreamPlayer(11111);
-		flightRecorder = new StreamRecorder(11111);
 	}
 
 	/***
@@ -69,22 +63,6 @@ public class TelloDrone extends MultiRotorDrone {
 	 */
 	public void streamOff() throws IOException {
 		this.controller.sendCommand("streamoff");
-	}
-
-	public void streamViewOn() {
-		flightCamera.start();
-	}
-
-	public void streamViewOff() throws IOException, InterruptedException {
-		flightCamera.closeVideoStream();
-	}
-
-	public void streamRecordOn() {
-		flightRecorder.start();
-	}
-
-	public void streamRecordOff() throws IOException, InterruptedException {
-		flightRecorder.endVideoRecord();
 	}
 
 	/***
