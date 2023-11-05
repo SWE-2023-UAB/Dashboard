@@ -10,7 +10,6 @@ public class TelloFlightDemo {
 		TelloDrone tello = new TelloDrone();
 		tello.activateSDK();
 		tello.streamOn();
-		tello.streamViewOn();
 		tello.hoverInPlace(10);
 		tello.takeoff();
 		tello.flyForward(100);
@@ -21,7 +20,6 @@ public class TelloFlightDemo {
 		tello.turnCW(180);
 		tello.land();
 		tello.streamOff();
-		tello.streamViewOff();
 		tello.end();
 	}
 

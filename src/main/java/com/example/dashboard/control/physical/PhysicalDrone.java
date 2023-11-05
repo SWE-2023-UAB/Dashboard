@@ -6,7 +6,7 @@ import com.example.dashboard.control.DroneController;
 
 public abstract class PhysicalDrone {
 
-	protected DroneController controller;
+	public DroneController controller;
 
 	/***
 	 * 

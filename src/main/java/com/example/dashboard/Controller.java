@@ -14,18 +14,34 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.SocketException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
+import com.example.dashboard.control.physical.tello.TelloDrone;
+import com.example.dashboard.control.physical.tello.*;
+import com.example.dashboard.control.DroneController;
+
 
 public class Controller implements Initializable {
+
     //Singleton instance access
     DashApplication instance = DashApplication.getInstance();
+    TelloDrone tello = new TelloDrone();
+
+    //THIS IS WHAT I WANT TO BE ABLE TO DO
+
+//    public TelloDrone() throws SocketException, UnknownHostException, FileNotFoundException {
+//        this.controller = new DroneController(9000, 8889, "192.168.10.1");
+//    }
+//    tello.controller.sendCommand("takeoff");
 
     //Hierarchy ==> TreeView
     public TreeView treeView;
@@ -34,6 +50,9 @@ public class Controller implements Initializable {
     //Create hashmap with name as key and object as value
     HashMap<String, ItemContainer> containerMap = new HashMap<String, ItemContainer>();
     public boolean isGettingItem;
+
+    public Controller() throws SocketException, UnknownHostException, FileNotFoundException {
+    }
 
     @FXML
     //Show selected item from hierarchy

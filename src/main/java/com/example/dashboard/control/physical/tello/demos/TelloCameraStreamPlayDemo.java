@@ -10,10 +10,8 @@ public class TelloCameraStreamPlayDemo {
 		TelloDrone tello = new TelloDrone();
 		tello.activateSDK();
 		tello.streamOn();
-		tello.streamViewOn();
 		tello.hoverInPlace(60);
 		tello.streamOff();
-		tello.streamViewOff();
 		tello.end();
 	}
 
