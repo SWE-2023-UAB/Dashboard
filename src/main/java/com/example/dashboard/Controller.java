@@ -1,6 +1,5 @@
 package com.example.dashboard;
 import javafx.animation.*;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,7 +25,6 @@ import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 import com.example.dashboard.control.physical.tello.TelloDrone;
-import com.example.dashboard.control.physical.tello.*;
 import com.example.dashboard.control.DroneController;
 
 
@@ -35,6 +33,20 @@ public class Controller implements Initializable {
     //Singleton instance access
     DashApplication instance = DashApplication.getInstance();
     TelloDrone tello = new TelloDrone();
+    //This is all hypothetical since I don't have the drone, this gets the controller in the drone class
+    DroneController droneController = tello.getController();
+
+    /*Method which sends a command to the drone controller and returns the response
+    When I run this without the drone, it does give the timeout error, so it's working?
+     */
+    public void testDroneController() {
+        try {
+            String response = droneController.sendCommand("takeoff");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     //THIS IS WHAT I WANT TO BE ABLE TO DO
 

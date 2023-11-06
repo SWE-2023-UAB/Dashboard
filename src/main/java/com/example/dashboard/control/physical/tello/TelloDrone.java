@@ -26,6 +26,11 @@ public class TelloDrone extends MultiRotorDrone {
 		this.controller = new DroneController(9000, 8889, "192.168.10.1");
 	}
 
+	//Getter for drone controller
+	public DroneController getController() {
+		return this.controller;
+	}
+
 	/***
 	 * 
 	 * @throws IOException
