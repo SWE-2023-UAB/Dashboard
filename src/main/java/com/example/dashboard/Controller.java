@@ -41,12 +41,32 @@ public class Controller implements Initializable {
      */
     public void testDroneController() {
         try {
+            String response = droneController.sendCommand("command");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
             String response = droneController.sendCommand("takeoff");
             System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        try {
+            String response = droneController.sendCommand("forward 10");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("land");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
 
     //THIS IS WHAT I WANT TO BE ABLE TO DO
 
@@ -97,6 +117,7 @@ public class Controller implements Initializable {
             "Change Location",
             "Change Dimensions"
     };
+
 
     @Override
     //Allow items to be selected from dropdown and define click functions
@@ -662,6 +683,7 @@ public class Controller implements Initializable {
     }
     //Method to scan the whole farm
     public void StartScanAnimation(ActionEvent event) {
+        testDroneController();
         double currentX = droneImage.getLayoutX();
         double currentY = droneImage.getLayoutY();
 
