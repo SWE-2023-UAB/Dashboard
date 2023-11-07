@@ -53,7 +53,49 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
         try {
-            String response = droneController.sendCommand("forward 10");
+            String response = droneController.sendCommand("up 100");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 500");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("ccw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 500");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("ccw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 500");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("ccw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 500");
             System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();
