@@ -40,72 +40,73 @@ public class Controller implements Initializable {
     When I run this without the drone, it does give the timeout error, so it's working?
      */
     public void testDroneController() {
-        try {
-            String response = droneController.sendCommand("command");
-            System.out.println(response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            String response = droneController.sendCommand("takeoff");
-            System.out.println(response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            String response = droneController.sendCommand("up 100");
-            System.out.println(response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            String response = droneController.sendCommand("forward 500");
-            System.out.println(response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            String response = droneController.sendCommand("ccw 90");
-            System.out.println(response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            String response = droneController.sendCommand("forward 500");
-            System.out.println(response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            String response = droneController.sendCommand("ccw 90");
-            System.out.println(response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            String response = droneController.sendCommand("forward 500");
-            System.out.println(response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            String response = droneController.sendCommand("ccw 90");
-            System.out.println(response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            String response = droneController.sendCommand("forward 500");
-            System.out.println(response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            String response = droneController.sendCommand("land");
-            System.out.println(response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println("Testing Drone Controller");
+//        try {
+//            String response = droneController.sendCommand("command");
+//            System.out.println(response);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            String response = droneController.sendCommand("takeoff");
+//            System.out.println(response);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            String response = droneController.sendCommand("up 100");
+//            System.out.println(response);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            String response = droneController.sendCommand("forward 500");
+//            System.out.println(response);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            String response = droneController.sendCommand("ccw 90");
+//            System.out.println(response);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            String response = droneController.sendCommand("forward 500");
+//            System.out.println(response);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            String response = droneController.sendCommand("ccw 90");
+//            System.out.println(response);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            String response = droneController.sendCommand("forward 500");
+//            System.out.println(response);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            String response = droneController.sendCommand("ccw 90");
+//            System.out.println(response);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            String response = droneController.sendCommand("forward 500");
+//            System.out.println(response);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            String response = droneController.sendCommand("land");
+//            System.out.println(response);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
 
@@ -141,6 +142,7 @@ public class Controller implements Initializable {
     public Button fly;
     public Button home;
     public Button scan;
+    public ToggleButton toggleDrone;
 
     @FXML
     // Create dropdown for item and itemcontainer
@@ -182,6 +184,24 @@ public class Controller implements Initializable {
             else {
                 GetContainerSelection(event);
                 itemContainerBox.getSelectionModel().clearSelection();
+            }
+        });
+        toggleDrone.setOnAction(event -> {
+            if (toggleDrone.isSelected()) {
+                toggleDrone.setText("Turn Off Drone");
+                /*change the fly button to call the test drone controller method
+                This needs to be changed whenever we have the methods to fly the drone to the item containers
+                 */
+                fly.setOnAction(e -> {
+                    testDroneController();
+                });
+            }
+            else {
+                toggleDrone.setText("Turn On Drone");
+                //change the fly button to call the doneAnimation method
+                fly.setOnAction(e -> {
+                    droneAnimation(event);
+                });
             }
         });
         treeView.setRoot(rootItem);
