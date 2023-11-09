@@ -35,12 +35,28 @@ public class Controller implements Initializable {
     HashMap<String, ItemContainer> containerMap = new HashMap<String, ItemContainer>();
     public boolean isGettingItem;
 
+    //initializing visitor
+    public ItemVisitorCalc itemVisitorCalc = new ItemVisitorCalc();
+
     @FXML
     //Show selected item from hierarchy
     public void SelectItem(){
         TreeItem<String> item = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
         if (item != null) {
             System.out.println(item);
+            //if item is present in the map, use visitor to calculate price
+            if(containerMap.get(item.getValue()) != null){
+                String price = String.valueOf(itemVisitorCalc.visit(containerMap.get(item.getValue())));
+                //containers DON'T have marketvalues
+                priceLabel.setText(price);
+                marketValueLabel.setText("0");
+            }
+            //else it must be an item, so retrieve the item info from the parent container's map then call visitor on that.
+            else{
+                String price = String.valueOf(itemVisitorCalc.visit(containerMap.get(item.getParent().getValue()).getItemFromMap(item.getValue())));
+                priceLabel.setText(price);
+                marketValueLabel.setText(price);
+            }
         }
     }
     public Pane visualPane;
@@ -54,6 +70,10 @@ public class Controller implements Initializable {
     public ChoiceBox<String> itemContainerBox;
     public ChoiceBox<String> itemBox;
     public Button submitButton;
+
+    public Label priceLabel;
+
+    public Label marketValueLabel;
     public String[] itemContainerOptions = {
             "Add Item-Container",
             "Delete Item-Container"

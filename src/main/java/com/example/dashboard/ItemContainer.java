@@ -2,7 +2,7 @@ package com.example.dashboard;
 
 import java.util.HashMap;
 
-public class ItemContainer {
+public class ItemContainer implements ItemElement {
     private String name, price, locationX, locationY, length, width, height;
     //map of item containers being contained in a container.
     private HashMap<String, Item> itemsMap = new HashMap<>();
@@ -87,5 +87,10 @@ public class ItemContainer {
 
     public HashMap<String, Item> getItemsMap() {
         return itemsMap;
+    }
+
+    @Override
+    public int accept(ItemVisitor visitor) {
+        return visitor.visit(this);
     }
 }
