@@ -1,4 +1,5 @@
 package com.example.dashboard;
+
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -16,10 +17,8 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
+
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
@@ -40,8 +39,12 @@ public class Controller implements Initializable {
 
     @FXML
     //Show selected item from hierarchy
-    public void SelectItem(){
+    public void SelectItem() {
         TreeItem<String> item = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
+        //Set null if it is Farm, Command Center, Drone Box, or Drone
+        if (item != null && (item.getValue().equals("Farm") || item.getValue().equals("Command Center") || item.getValue().equals("Drone Box") || item.getValue().equals("Drone"))) {
+            item = null;
+        }
         //If the item is not null and is an item container, calculate the price and market value
         if (item != null && containerMap.get(item.getValue()) != null) {
             int price = calculatePrice(item);
@@ -56,6 +59,7 @@ public class Controller implements Initializable {
             marketValueLabel.setText("Marketvalue: " + price);
         }
     }
+
     //Calculate price by including all containers and items
     public int calculatePrice(TreeItem<String> currentItem) {
         int totalPrice = 0;
@@ -81,6 +85,7 @@ public class Controller implements Initializable {
         }
         return totalPrice;
     }
+
     //Calculate market value by excluding all containers and only including items
     public int calculateTotalMarket(TreeItem<String> currentItem) {
         int totalValue = 0;
@@ -101,6 +106,7 @@ public class Controller implements Initializable {
         }
         return totalValue;
     }
+
     public Pane visualPane;
     public ImageView droneImage;
     public Button fly;
@@ -142,19 +148,18 @@ public class Controller implements Initializable {
             isGettingItem = true;
             itemContainerBox.getSelectionModel().clearSelection();
         });
-        submitButton.setOnAction(event ->  {
+        submitButton.setOnAction(event -> {
             if (isGettingItem) {
                 GetItemSelection(event);
                 itemBox.getSelectionModel().clearSelection();
-            }
-            else {
+            } else {
                 GetContainerSelection(event);
                 itemContainerBox.getSelectionModel().clearSelection();
             }
         });
         treeView.setRoot(rootItem);
         //making farm an item in the map
-        containerMap.put(rootItem.getValue(), new ItemContainer(rootItem.getValue(), "", "0", "0", "800", "400" , ""));
+        containerMap.put(rootItem.getValue(), new ItemContainer(rootItem.getValue(), "", "0", "0", "800", "400", ""));
         //selecting farm in tree view by default
         treeView.getSelectionModel().select(rootItem);
 
@@ -196,10 +201,10 @@ public class Controller implements Initializable {
     }
 
     //If item from item dropdown is selected
-    public void GetContainerSelection (ActionEvent event){
+    public void GetContainerSelection(ActionEvent event) {
         //Set selected item to variable
         String containerSelection = itemContainerBox.getValue();
-        switch(containerSelection){
+        switch (containerSelection) {
             case "Add Item-Container" -> {
                 // Check if there's a selected item in the tree view
                 TreeItem<String> selectedItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
@@ -223,10 +228,9 @@ public class Controller implements Initializable {
                             //Run IC-Controller
                             ICController icController = fxmlLoader.getController();
                             //Add item to hierarchy
-                            if (icController.itemC.getLocationX().isEmpty() || icController.itemC.getLocationY().isEmpty() || icController.itemC.getLength().isEmpty() || icController.itemC.getWidth().isEmpty()){
+                            if (icController.itemC.getLocationX().isEmpty() || icController.itemC.getLocationY().isEmpty() || icController.itemC.getLength().isEmpty() || icController.itemC.getWidth().isEmpty()) {
                                 System.out.println("Missing Params!");
-                            }
-                            else{
+                            } else {
                                 //Draw rectangle for item container
                                 TreeItem<String> branch = new TreeItem<>(icController.itemC.getName());
                                 selectedItem.getChildren().add(branch);
@@ -246,37 +250,41 @@ public class Controller implements Initializable {
                     TreeItem<String> selectedItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
 
                     if (selectedItem != null && !selectedItem.getValue().equals("Command Center")) {
-                        TreeItem<String> parent = selectedItem.getParent();
-                        String containerName = selectedItem.getValue();
-                        if (parent != null) {
-                            //Check if the selected item is a container and in the container map
-                            if (containerMap.containsKey(containerName) && containerMap.get(containerName) instanceof ItemContainer) {
-                                ItemContainer container = (ItemContainer) containerMap.get(containerName);
-                                Map<String, Item> itemsMap = container.getItemsMap();
-
-                                //Remove all items in the container from the visual pane
-                                for (String itemName : itemsMap.keySet()) {
-                                    deleteRectangle(itemName);
-                                }
-                                //Delete the rectangle for the container
-                                deleteRectangle(containerName);
-                                //Remove the item from the parent
-                                parent.getChildren().remove(selectedItem);
-                                //Remove the item from the container map
-                                containerMap.remove(containerName);
-                            }
-                        }
+                        deleteItemContainer(selectedItem);
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
     }
 
+    //Method to recursively delete item containers
+    public void deleteItemContainer(TreeItem<String> item) {
+        if (item != null) {
+            TreeItem<String> parent = item.getParent();
+            String containerName = item.getValue();
+            if (parent != null) {
+                if (containerMap.containsKey(containerName) && containerMap.get(containerName) != null) {
+                    ItemContainer container = (ItemContainer) containerMap.get(containerName);
+                    Map<String, Item> itemsMap = container.getItemsMap();
+                    for (String itemName : itemsMap.keySet()) {
+                        deleteRectangle(itemName);
+                    }
+                    deleteRectangle(containerName);
+                    parent.getChildren().remove(item);
+                    containerMap.remove(containerName);
+                    //recursively delete nested item containers
+                    for (TreeItem<String> child : new ArrayList<>(item.getChildren())) {
+                        deleteItemContainer(child);
+                    }
+                }
+            }
+        }
+    }
+
     //if item from item-container dropdown is selected
-    public void GetItemSelection (ActionEvent event){
+    public void GetItemSelection(ActionEvent event) {
         //Set selected item to variable
         String itemSelection = itemBox.getValue();
         switch (itemSelection) {
@@ -289,41 +297,40 @@ public class Controller implements Initializable {
                     if (selectedItem.getParent() != null && containerMap.get(selectedItem.getParent().getValue()).getItemFromMap(selectedItem.getValue()) instanceof Item) {
                         throw new RuntimeException("Items cannot have items as parents!");
                     }
-                        try {
-                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("item.fxml"));
-                            DialogPane icDialogue = fxmlLoader.load();
-                            Dialog<ButtonType> dialog = new Dialog<>();
-                            dialog.setDialogPane(icDialogue);
-                            dialog.setTitle("Item");
-                            Optional<ButtonType> clickedButton = dialog.showAndWait();
-                            //Submit dialogue pop up
-                            if (clickedButton.get() == ButtonType.FINISH) {
-                                System.out.println("Finished Pressed");
-                                IController iController = fxmlLoader.getController();
-                                //Create leaf node
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("item.fxml"));
+                        DialogPane icDialogue = fxmlLoader.load();
+                        Dialog<ButtonType> dialog = new Dialog<>();
+                        dialog.setDialogPane(icDialogue);
+                        dialog.setTitle("Item");
+                        Optional<ButtonType> clickedButton = dialog.showAndWait();
+                        //Submit dialogue pop up
+                        if (clickedButton.get() == ButtonType.FINISH) {
+                            System.out.println("Finished Pressed");
+                            IController iController = fxmlLoader.getController();
+                            //Create leaf node
 
 
-                                if (iController.item.getLocationX().isEmpty() || iController.item.getLocationY().isEmpty() || iController.item.getLength().isEmpty() || iController.item.getWidth().isEmpty()){
-                                    System.out.println("Missing Params!");
-                                }
-                                else{
-                                    TreeItem<String> leaf = new TreeItem<>(iController.item.getName());
-                                    //Check which item is currently selected in hierarchy
-                                    //add leaf node to item currently selected.
-                                    selectedItem.getChildren().addAll(leaf);
-                                    System.out.println(selectedItem.getValue());
-                                    //Add item to Hashmap with name as key and object as value
-                                    System.out.println(containerMap.get(selectedItem.getValue()));
-                                    containerMap.get(selectedItem.getValue()).addItemToMap(iController.item.getName(), iController.item);
-                                    System.out.println(containerMap.get(selectedItem.getValue()).getItemFromMap(iController.item.getName()));
-                                    //Draw rectangle for item
-                                    DrawRectangle(iController.item);
-                                }
+                            if (iController.item.getLocationX().isEmpty() || iController.item.getLocationY().isEmpty() || iController.item.getLength().isEmpty() || iController.item.getWidth().isEmpty()) {
+                                System.out.println("Missing Params!");
+                            } else {
+                                TreeItem<String> leaf = new TreeItem<>(iController.item.getName());
+                                //Check which item is currently selected in hierarchy
+                                //add leaf node to item currently selected.
+                                selectedItem.getChildren().addAll(leaf);
+                                System.out.println(selectedItem.getValue());
+                                //Add item to Hashmap with name as key and object as value
+                                System.out.println(containerMap.get(selectedItem.getValue()));
+                                containerMap.get(selectedItem.getValue()).addItemToMap(iController.item.getName(), iController.item);
+                                System.out.println(containerMap.get(selectedItem.getValue()).getItemFromMap(iController.item.getName()));
+                                //Draw rectangle for item
+                                DrawRectangle(iController.item);
                             }
-                        } catch (IOException e) {
-                            // Handle the IOException, e.g., by printing an error message
-                            e.printStackTrace();
                         }
+                    } catch (IOException e) {
+                        // Handle the IOException, e.g., by printing an error message
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -376,7 +383,7 @@ public class Controller implements Initializable {
                             String newName = changeNameController.getNewName();
                             //creating a copy of the original item for updating
                             ItemContainer updatedContainer = containerMap.get(curr.getValue());
-                            if (updatedContainer != null){
+                            if (updatedContainer != null) {
                                 Group updatedGroup = groupMap.get(curr.getValue());
                                 //Removing old instance
                                 containerMap.remove(curr.getValue());
@@ -436,12 +443,11 @@ public class Controller implements Initializable {
                             ItemContainer updatedContainer = containerMap.get(curr.getValue());
 
 
-                            if (updatedContainer != null){
+                            if (updatedContainer != null) {
                                 //updating price with new price
                                 containerMap.get(curr.getValue()).setPrice(newPrice);
                                 System.out.println("New Price: " + containerMap.get(curr.getValue()).getPrice());
-                            }
-                            else {
+                            } else {
                                 Item updatedItem = containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue());
                                 if (updatedItem != null) {
                                     //updating price
@@ -476,7 +482,7 @@ public class Controller implements Initializable {
 
                             ItemContainer updatedContainer = containerMap.get(curr.getValue());
 
-                            if (updatedContainer != null){
+                            if (updatedContainer != null) {
                                 //updating x and y
                                 containerMap.get(curr.getValue()).setLocationX(newX);
                                 containerMap.get(curr.getValue()).setLocationY(newY);
@@ -484,10 +490,9 @@ public class Controller implements Initializable {
                                         + ", (" + containerMap.get(curr.getValue()).getLocationY() + ")");
                                 //updating rectangle
                                 updateRectangle(curr.getValue());
-                            }
-                            else {
+                            } else {
                                 Item updatedItem = containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue());
-                                if (updatedItem != null){
+                                if (updatedItem != null) {
                                     //you don't gotta update the group, group update is only necessary for name changes.
                                     containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setLocationX(newX);
                                     containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setLocationY(newY);
@@ -521,7 +526,7 @@ public class Controller implements Initializable {
                             String newHeight = changeDimensionsController.getNewHeight();
 
                             //updating dimensions of container
-                            if(containerMap.get(curr.getValue()) != null){
+                            if (containerMap.get(curr.getValue()) != null) {
                                 containerMap.get(curr.getValue()).setLength(newLength);
                                 containerMap.get(curr.getValue()).setWidth(newWidth);
                                 containerMap.get(curr.getValue()).setHeight(newHeight);
@@ -530,12 +535,10 @@ public class Controller implements Initializable {
                                         + containerMap.get(curr.getValue()).getHeight());
                                 //updating rectangle
                                 updateRectangle(curr.getValue().toString());
-                            }
-
-                            else{
+                            } else {
                                 //not too sure why this is here, since technically it wastes memory, but it's just used for checks
                                 Item updatedItem = containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue());
-                                if (updatedItem != null){
+                                if (updatedItem != null) {
                                     //you don't gotta update the group, group update is only necessary for name changes.
                                     containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setWidth(newWidth);
                                     containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setLength(newLength);
@@ -557,7 +560,7 @@ public class Controller implements Initializable {
     public Map<String, Group> groupMap = new HashMap<String, Group>();
 
     //Method to draw the rectangles that takes itemContainer as a parameter
-    public void DrawRectangle(ItemContainer itemContainer){
+    public void DrawRectangle(ItemContainer itemContainer) {
         //Create a group for the rectangle and text
         Group group = new Group();
         //Create the rectangle for the item container in the border pane
@@ -579,8 +582,9 @@ public class Controller implements Initializable {
         //Add the group to the group map
         groupMap.put(itemContainer.getName(), group);
     }
+
     //Overloading DrawRectangle method to draw the rectangles that takes item as a parameter
-    public void DrawRectangle(Item item){
+    public void DrawRectangle(Item item) {
         //Create a group for the rectangle and text
         Group group = new Group();
         //Create the rectangle for the item container in the border pane
@@ -602,6 +606,7 @@ public class Controller implements Initializable {
         //Add the group to the group map
         groupMap.put(item.getName(), group);
     }
+
     //Method to delete the rectangles that takes itemContainer as a parameter
     public void deleteRectangle(String name) {
         Group group = groupMap.get(name);
@@ -610,6 +615,7 @@ public class Controller implements Initializable {
             groupMap.remove(name);
         }
     }
+
     //Method to update the rectangles when itemContainer or item is changed
     public void updateRectangle(String name) {
         Group group = groupMap.get(name);
@@ -652,11 +658,11 @@ public class Controller implements Initializable {
                     group.getChildren().set(1, text);
                 }
             }
-        }
-        else{
+        } else {
             System.out.println("Uh oh spagghetti os");
         }
     }
+
     //Method to animate the drone to the selected item
     public void droneAnimation(ActionEvent event) {
         TreeItem<String> selectedItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
@@ -685,12 +691,14 @@ public class Controller implements Initializable {
             }
         }
     }
+
     //Method to animate the drone to the home position
     public void homeAnimation(ActionEvent event) {
         double homeX = Double.parseDouble(containerMap.get("Drone Box").getLocationX()) + 15;
         double homeY = Double.parseDouble(containerMap.get("Drone Box").getLocationY()) + 15;
         move(homeX, homeY);
     }
+
     //Method to scan the whole farm
     public void StartScanAnimation(ActionEvent event) {
         double currentX = droneImage.getLayoutX();
@@ -698,7 +706,7 @@ public class Controller implements Initializable {
 
         // Move to (0,0) from starting position
         TranslateTransition moveHome = new TranslateTransition(Duration.seconds(3), droneImage);
-        move(0,0);
+        move(0, 0);
 
         double fullX = 720;
         double someY = 100;
@@ -719,7 +727,7 @@ public class Controller implements Initializable {
                     TranslateTransition moveBCK = new TranslateTransition(Duration.seconds(timeX), droneImage);
                     moveBCK.setByX(-fullX);
                     moveBCK.play();
-                    moveBCK.setOnFinished(h ->{
+                    moveBCK.setOnFinished(h -> {
                         TranslateTransition moveDWN02 = new TranslateTransition(Duration.seconds(timeY), droneImage);
                         moveDWN02.setByY(someY);
                         moveDWN02.play();
@@ -735,7 +743,7 @@ public class Controller implements Initializable {
                                     TranslateTransition moveBCK02 = new TranslateTransition(Duration.seconds(timeX), droneImage);
                                     moveBCK02.setByX(-fullX);
                                     moveBCK02.play();
-                                    moveBCK02.setOnFinished(l ->{
+                                    moveBCK02.setOnFinished(l -> {
                                         TranslateTransition moveDWN04 = new TranslateTransition(Duration.seconds(timeY), droneImage);
                                         moveDWN04.setByY(someY);
                                         moveDWN04.play();
@@ -764,6 +772,7 @@ public class Controller implements Initializable {
         });
         moveHome.play();
     }
+
     //Method to move the drone to the next position in the scan
     public void move(double x, double y) {
         //Get the current position of the drone
