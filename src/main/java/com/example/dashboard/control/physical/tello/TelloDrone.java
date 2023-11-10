@@ -12,10 +12,12 @@ import com.example.dashboard.control.physical.MultiRotorDrone;
 
 public class TelloDrone extends MultiRotorDrone {
 
-	private final int maxGoto = 500, minGoto = -500, minDist = 20, maxSpeed = 100, minSpeed = 10, maxDegrees = 360, minDegrees = 1;
+	private final int maxGoto = 550, minGoto = -550, minDist = 20, maxSpeed = 100, minSpeed = 10, maxDegrees = 360, minDegrees = 1;
 	private final int maxDist = maxGoto;
 	//private String filePath = "/Users/MasterControlProgram/git/jdrone/src/VideoRecv.mp4";
-
+	public int x = 67;
+	public int y = 439;
+	public int z = 0;
 	/***
 	 * 
 	 * @throws SocketException

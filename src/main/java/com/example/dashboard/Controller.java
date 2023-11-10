@@ -39,74 +39,200 @@ public class Controller implements Initializable {
     /*Method which sends a command to the drone controller and returns the response
     When I run this without the drone, it does give the timeout error, so it's working?
      */
-    public void testDroneController() {
+    public void ScanDroneController() {
         System.out.println("Testing Drone Controller");
-//        try {
-//            String response = droneController.sendCommand("command");
-//            System.out.println(response);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            String response = droneController.sendCommand("takeoff");
-//            System.out.println(response);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            String response = droneController.sendCommand("up 100");
-//            System.out.println(response);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            String response = droneController.sendCommand("forward 500");
-//            System.out.println(response);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            String response = droneController.sendCommand("ccw 90");
-//            System.out.println(response);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            String response = droneController.sendCommand("forward 500");
-//            System.out.println(response);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            String response = droneController.sendCommand("ccw 90");
-//            System.out.println(response);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            String response = droneController.sendCommand("forward 500");
-//            System.out.println(response);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            String response = droneController.sendCommand("ccw 90");
-//            System.out.println(response);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            String response = droneController.sendCommand("forward 500");
-//            System.out.println(response);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        try {
-//            String response = droneController.sendCommand("land");
-//            System.out.println(response);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            String response = droneController.sendCommand("command");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("takeoff");
+            System.out.println(response);
+            tello.z += 50;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("up 100");
+            System.out.println(response);
+            tello.z += 100;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //GO TO 0,0
+        try {
+            String response = droneController.sendCommand(String.format("go -%d -%d %d %d", tello.x, tello.y, 0, 40));
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //START SCANNING
+        try {
+            String response = droneController.sendCommand("ccw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 878");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 122");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 878");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("ccw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 122");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("ccw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 878");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 122");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 878");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("ccw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 122");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("ccw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 878");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 122");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 878");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //FLY BACK HOME
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 542");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 439");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -193,7 +319,7 @@ public class Controller implements Initializable {
                 This needs to be changed whenever we have the methods to fly the drone to the item containers
                  */
                 fly.setOnAction(e -> {
-                    testDroneController();
+                    ScanDroneController();
                 });
             }
             else {
@@ -745,9 +871,11 @@ public class Controller implements Initializable {
     }
     //Method to scan the whole farm
     public void StartScanAnimation(ActionEvent event) {
-        testDroneController();
+        ScanDroneController();
         double currentX = droneImage.getLayoutX();
         double currentY = droneImage.getLayoutY();
+
+
 
         // Move to (0,0) from starting position
         TranslateTransition moveHome = new TranslateTransition(Duration.seconds(3), droneImage);
