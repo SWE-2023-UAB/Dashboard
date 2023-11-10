@@ -36,8 +36,46 @@ public class Controller implements Initializable {
     //This is all hypothetical since I don't have the drone, this gets the controller in the drone class
     DroneController droneController = tello.getController();
 
+    public void MoveDroneToObject(int x, int y) {
+        try {
+            String response = droneController.sendCommand("command");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("takeoff");
+            System.out.println(response);
+            tello.z += 50;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("up 100");
+            System.out.println(response);
+            tello.z += 100;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand(String.format("go %d %d %d %d", y-tello.x, x-tello.y, 0, 40));
+            tello.x = y;
+            tello.y = x;
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("land");
+            System.out.println(response);
+            tello.z += 50;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     /*Method which sends a command to the drone controller and returns the response
-    When I run this without the drone, it does give the timeout error, so it's working?
      */
     public void ScanDroneController() {
         System.out.println("Testing Drone Controller");
@@ -229,6 +267,12 @@ public class Controller implements Initializable {
         }
         try {
             String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("land");
             System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();
@@ -844,9 +888,10 @@ public class Controller implements Initializable {
             if (selectedContainer != null) {
                 //Stop any ongoing animation
                 droneImage.getTransforms().clear();
-                double centerX = Double.parseDouble(selectedContainer.getLocationX()) + Double.parseDouble(selectedContainer.getLength()) / 2 - 25;
-                double centerY = Double.parseDouble(selectedContainer.getLocationY()) + Double.parseDouble(selectedContainer.getWidth()) / 2 - 25;
+                int centerX = Integer.parseInt(selectedContainer.getLocationX()) + Integer.parseInt(selectedContainer.getLength()) / 2 - 25;
+                int centerY = Integer.parseInt(selectedContainer.getLocationY()) + Integer.parseInt(selectedContainer.getWidth()) / 2 - 25;
                 move(centerX, centerY);
+                MoveDroneToObject(centerX, centerY);
             } else {
                 String containerName = selectedItem.getParent().getValue();
                 ItemContainer container = containerMap.get(containerName);
@@ -855,9 +900,10 @@ public class Controller implements Initializable {
                     if (item != null) {
                         //Stop any ongoing animation
                         droneImage.getTransforms().clear();
-                        double centerX = Double.parseDouble(item.getLocationX()) + Double.parseDouble(item.getLength()) / 2 - 25;
-                        double centerY = Double.parseDouble(item.getLocationY()) + Double.parseDouble(item.getWidth()) / 2 - 25;
+                        int centerX = Integer.parseInt(item.getLocationX()) + Integer.parseInt(item.getLength()) / 2 - 25;
+                        int centerY = Integer.parseInt(item.getLocationY()) + Integer.parseInt(item.getWidth()) / 2 - 25;
                         move(centerX, centerY);
+                        MoveDroneToObject(centerX, centerY);
                     }
                 }
             }
