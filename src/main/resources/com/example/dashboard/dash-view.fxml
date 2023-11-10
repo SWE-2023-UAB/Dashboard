@@ -25,22 +25,12 @@
       <Pane fx:id="visualPane" layoutX="301.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-border-color: black;">
          <ImageView fx:id="droneImage" fitHeight="50.0" fitWidth="50.0" layoutX="370.0" layoutY="103.0" />
       </Pane>
-      <Label alignment="CENTER_RIGHT" layoutX="21.0" layoutY="328.0" prefHeight="56.0" prefWidth="106.0" text="Price:" textAlignment="RIGHT">
+      <Label fx:id="priceLabel" layoutX="21.0" layoutY="328.0" prefHeight="56.0" prefWidth="253.0" text="Price:" textAlignment="RIGHT">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="25.0" layoutY="376.0" prefHeight="56.0" prefWidth="106.0" text="Marketvalue:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="marketValueLabel" layoutX="132.0" layoutY="376.0" prefHeight="56.0" prefWidth="106.0" text="0">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="priceLabel" layoutX="131.0" layoutY="328.0" prefHeight="56.0" prefWidth="106.0" text="0">
+      <Label fx:id="marketValueLabel" layoutX="25.0" layoutY="376.0" prefHeight="56.0" prefWidth="253.0" text="Marketvalue:">
          <font>
             <Font size="18.0" />
          </font>

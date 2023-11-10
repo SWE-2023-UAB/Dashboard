@@ -45,19 +45,33 @@ public class Controller implements Initializable {
         if (item != null) {
             System.out.println(item);
             //if item is present in the map, use visitor to calculate price
-            if(containerMap.get(item.getValue()) != null){
-                String price = String.valueOf(itemVisitorCalc.visit(containerMap.get(item.getValue())));
-                //containers DON'T have marketvalues
-                priceLabel.setText(price);
-                marketValueLabel.setText("0");
+            if (containerMap.get(item.getValue()) != null) {
+                int marketValue = 0;
+                int price = itemVisitorCalc.visit(containerMap.get(item.getValue()));
+                /**
+                 * THESE COMMENTS ARE JUST LIKE NOTES OF REQUIREMENTS OF VISITOR PATTERN
+                 */
+                //containers DON'T have marketvalues, market value should be sum of all child ITEMS in current container
+                //and sub containers of current container.
+                //price should be sum of children of container (INCLUDING CONTAINERS AND ITEMS) and selected container price
+                priceLabel.setText("Price: " + price);
+                    for (int i = 0; i < item.getChildren().size(); i++) {
+                        //child isn't in container map, must be an item.
+                        if (containerMap.get(item.getChildren().get(i).getValue()) == null) {
+                            //some mean spaghetti
+                            marketValue += itemVisitorCalc.visit(containerMap.get(item.getChildren().get(i).getParent()
+                                    .getValue()).getItemFromMap(item.getChildren().get(i).getValue()));
+                        }
+                    }
+                marketValueLabel.setText("Marketvalue: " + marketValue);
+                }
+                //else it must be an item, so retrieve the item info from the parent container's map then call visitor on that.
+                else {
+                    int price = itemVisitorCalc.visit(containerMap.get(item.getParent().getValue()).getItemFromMap(item.getValue()));
+                    priceLabel.setText("Price: "+ price);
+                    marketValueLabel.setText("Marketvalue: " + price);
+                }
             }
-            //else it must be an item, so retrieve the item info from the parent container's map then call visitor on that.
-            else{
-                String price = String.valueOf(itemVisitorCalc.visit(containerMap.get(item.getParent().getValue()).getItemFromMap(item.getValue())));
-                priceLabel.setText(price);
-                marketValueLabel.setText(price);
-            }
-        }
     }
     public Pane visualPane;
     public ImageView droneImage;
