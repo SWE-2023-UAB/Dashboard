@@ -42,36 +42,64 @@ public class Controller implements Initializable {
     //Show selected item from hierarchy
     public void SelectItem(){
         TreeItem<String> item = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
-        if (item != null) {
-            System.out.println(item);
-            //if item is present in the map, use visitor to calculate price
-            if (containerMap.get(item.getValue()) != null) {
-                int marketValue = 0;
-                int price = itemVisitorCalc.visit(containerMap.get(item.getValue()));
-                /**
-                 * THESE COMMENTS ARE JUST LIKE NOTES OF REQUIREMENTS OF VISITOR PATTERN
-                 */
-                //containers DON'T have marketvalues, market value should be sum of all child ITEMS in current container
-                //and sub containers of current container.
-                //price should be sum of children of container (INCLUDING CONTAINERS AND ITEMS) and selected container price
-                priceLabel.setText("Price: " + price);
-                    for (int i = 0; i < item.getChildren().size(); i++) {
-                        //child isn't in container map, must be an item.
-                        if (containerMap.get(item.getChildren().get(i).getValue()) == null) {
-                            //some mean spaghetti
-                            marketValue += itemVisitorCalc.visit(containerMap.get(item.getChildren().get(i).getParent()
-                                    .getValue()).getItemFromMap(item.getChildren().get(i).getValue()));
+        //If the item is not null and is an item container, calculate the price and market value
+        if (item != null && containerMap.get(item.getValue()) != null) {
+            int price = calculatePrice(item);
+            int marketValue = calculateTotalMarket(item);
+            priceLabel.setText("Price: " + price);
+            marketValueLabel.setText("Marketvalue: " + marketValue);
+        }
+        //If the item is not null and is an item, display the price and market value
+        else if (item != null && containerMap.get(item.getParent().getValue()) != null) {
+            int price = itemVisitorCalc.visit(containerMap.get(item.getParent().getValue()).getItemFromMap(item.getValue()));
+            priceLabel.setText("Price: " + price);
+            marketValueLabel.setText("Marketvalue: " + price);
+        }
+    }
+    //Calculate price by including all containers and items
+    public int calculatePrice(TreeItem<String> currentItem) {
+        int totalPrice = 0;
+        if (currentItem != null) {
+            if (containerMap.containsKey(currentItem.getValue())) {
+                //Calculate the price of an item-container
+                totalPrice += itemVisitorCalc.visit(containerMap.get(currentItem.getValue()));
+                for (TreeItem<String> child : currentItem.getChildren()) {
+                    if (containerMap.containsKey(child.getValue())) {
+                        //Recursively calculate prices of child containers
+                        totalPrice += calculatePrice(child);
+                    } else {
+                        //Consider the price only if the child is an individual item and hasn't been counted before
+                        if (containerMap.get(child.getParent().getValue()) == null) {
+                            totalPrice += itemVisitorCalc.visit(containerMap.get(currentItem.getValue()).getItemFromMap(child.getValue()));
                         }
                     }
-                marketValueLabel.setText("Marketvalue: " + marketValue);
                 }
-                //else it must be an item, so retrieve the item info from the parent container's map then call visitor on that.
-                else {
-                    int price = itemVisitorCalc.visit(containerMap.get(item.getParent().getValue()).getItemFromMap(item.getValue()));
-                    priceLabel.setText("Price: "+ price);
-                    marketValueLabel.setText("Marketvalue: " + price);
+            } else if (currentItem.getParent() == null) {
+                //Calculate the price for individual items directly under the root
+                totalPrice += itemVisitorCalc.visit(containerMap.get(currentItem.getValue()));
+            }
+        }
+        return totalPrice;
+    }
+    //Calculate market value by excluding all containers and only including items
+    public int calculateTotalMarket(TreeItem<String> currentItem) {
+        int totalValue = 0;
+        if (currentItem != null && containerMap.containsKey(currentItem.getValue())) {
+            ItemContainer currentContainer = containerMap.get(currentItem.getValue());
+            for (TreeItem<String> child : currentItem.getChildren()) {
+                //Check if the child is an itemContainer
+                if (containerMap.containsKey(child.getValue())) {
+                    //Recursively calculate the value of the child itemContainer
+                    totalValue += calculateTotalMarket(child);
+                }
+                //Check if the child is an item
+                else if (containerMap.get(currentItem.getValue()).getItemFromMap(child.getValue()) != null) {
+                    //Add the value of the child item to the total value
+                    totalValue += itemVisitorCalc.visit(containerMap.get(currentItem.getValue()).getItemFromMap(child.getValue()));
                 }
             }
+        }
+        return totalValue;
     }
     public Pane visualPane;
     public ImageView droneImage;
