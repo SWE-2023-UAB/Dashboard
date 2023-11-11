@@ -484,7 +484,7 @@ public class Controller implements Initializable {
         branch2.getChildren().addAll(leaf);
         //adding drone to farms item map.
         containerMap.get(rootItem.getValue()).addItemToMap(droneName, drone);
-        String imageURL = "https://pngimg.com/uploads/drone/drone_PNG116.png";
+        String imageURL = "https://i.ibb.co/QJMgZry/image-removebg-preview.png";
         Image image = new Image(imageURL);
         droneImage.setImage(image);
         //Set the position of the drone image using the coordinates of the drone box
@@ -862,9 +862,9 @@ public class Controller implements Initializable {
         rectangle.setWidth(Double.parseDouble(itemContainer.getLength()));
         rectangle.setHeight(Double.parseDouble(itemContainer.getWidth()));
         rectangle.setFill(null);
-        rectangle.setStroke(Color.RED);
+        rectangle.setStroke(Color.web("#94F3E4"));
         Text text = new Text(itemContainer.getName());
-        text.setFill(Color.BLACK);
+        text.setFill(Color.WHITE);
         //Set the position of the text
         text.setX(Double.parseDouble(itemContainer.getLocationX()) + 5);
         text.setY(Double.parseDouble(itemContainer.getLocationY()) + 15);
@@ -886,9 +886,9 @@ public class Controller implements Initializable {
         rectangle.setWidth(Double.parseDouble(item.getLength()));
         rectangle.setHeight(Double.parseDouble(item.getWidth()));
         rectangle.setFill(null);
-        rectangle.setStroke(Color.RED);
+        rectangle.setStroke(Color.web("#94F3E4"));
         Text text = new Text(item.getName());
-        text.setFill(Color.BLACK);
+        text.setFill(Color.WHITE);
         //Set the position of the text
         text.setX(Double.parseDouble(item.getLocationX()) + 5);
         text.setY(Double.parseDouble(item.getLocationY()) + 15);

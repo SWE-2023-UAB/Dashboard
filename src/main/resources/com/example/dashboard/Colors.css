@@ -1,0 +1,14 @@
+{
+    -son-white: #F6F1E9;
+    -son-gray: #202020;
+    -son-teal-darker: #1d322f
+;
+    -son-teal-dark: #267A70;
+    -son-teal: #37AA9C;
+    -son-teal-light: #94F3E4;
+    -son-red: #B90D0D;
+
+    -son-text-he: rgba(0, 0, 0, 0.87); /* High Emphasis */
+    -son-text-me: rgba(0, 0, 0, 0.60); /* Medium Emphasis*/
+    -son-text-disabled: rgba(0, 0, 0, 0.38); /* Disabled */
+}

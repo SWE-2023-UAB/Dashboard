@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import java.net.URL?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleButton?>
@@ -8,36 +9,145 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Line?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="AnchorPane" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.Controller">
    <children>
-      <TreeView fx:id="treeView" layoutX="7.0" layoutY="7.0" onContextMenuRequested="#SelectItem" onMouseClicked="#SelectItem" prefHeight="180.0" prefWidth="253.0" />
-      <ChoiceBox fx:id="itemContainerBox" layoutX="7.0" layoutY="211.0" prefWidth="150.0" />
-      <ChoiceBox fx:id="itemBox" layoutX="6.0" layoutY="265.0" prefWidth="150.0" />
-      <Label layoutX="7.0" layoutY="193.0" prefHeight="17.0" prefWidth="144.0" text="Item Container Actions" />
-      <Label layoutX="8.0" layoutY="248.0" prefHeight="17.0" prefWidth="144.0" text="Item Actions" />
-      <Button fx:id="fly" layoutX="21.0" layoutY="479.0" mnemonicParsing="false" onAction="#droneAnimation" prefHeight="26.0" prefWidth="129.0" text="Visit Item/Container" />
-      <Button fx:id="scan" layoutX="21.0" layoutY="523.0" mnemonicParsing="false" onAction="#StartScanAnimation" prefHeight="26.0" prefWidth="253.0" text="Scan FARM" />
-      <Button fx:id="home" layoutX="169.0" layoutY="479.0" mnemonicParsing="false" onAction="#homeAnimation" prefHeight="26.0" prefWidth="106.0" text="Go Home" />
-      <Line endX="198.0" endY="-3.0517578125E-5" layoutX="103.0" layoutY="310.0" startX="-109.26713562011719" />
-      <Button fx:id="submitButton" layoutX="185.0" layoutY="212.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="74.0" text="Submit" />
-      <Line endX="198.0" endY="-3.0517578125E-5" layoutX="103.0" layoutY="310.0" startX="-109.26713562011719" />
-      <Pane fx:id="visualPane" layoutX="301.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-border-color: black;">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="4.0" layoutX="-34.0" layoutY="314.0" stroke="BLACK" strokeType="INSIDE" styleClass="Rectangle" width="381.0">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.11372549086809158" green="0.19607843458652496" blue="0.18431372940540314" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.006711409395973154">
+                     <color>
+                        <Color red="0.11372549086809158" green="0.19607843458652496" blue="0.18431372940540314" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.4798657718120805">
+                     <color>
+                        <Color red="0.02083333395421505" green="0.1184210553765297" blue="0.10215643048286438" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.03801169618964195" green="0.10526315867900848" blue="0.09517543762922287" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Rectangle>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="4.0" layoutX="-33.0" layoutY="443.0" stroke="BLACK" strokeType="INSIDE" styleClass="Rectangle" width="381.0">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.11372549086809158" green="0.19607843458652496" blue="0.18431372940540314" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.006711409395973154">
+                     <color>
+                        <Color red="0.11372549086809158" green="0.19607843458652496" blue="0.18431372940540314" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.4798657718120805">
+                     <color>
+                        <Color red="0.02083333395421505" green="0.1184210553765297" blue="0.10215643048286438" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.03801169618964195" green="0.10526315867900848" blue="0.09517543762922287" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Rectangle>
+      <TreeView fx:id="treeView" layoutX="7.0" layoutY="7.0" onContextMenuRequested="#SelectItem" onMouseClicked="#SelectItem" prefHeight="180.0" prefWidth="287.0" styleClass="myTreeView">
+         <stylesheets>
+            <URL value="@Styling.css" />
+            <URL value="@Colors.css" />
+         </stylesheets></TreeView>
+      <ChoiceBox fx:id="itemContainerBox" layoutX="7.0" layoutY="211.0" prefHeight="25.0" prefWidth="150.0" styleClass="dropDown">
+         <stylesheets>
+            <URL value="@Colors.css" />
+            <URL value="@Styling.css" />
+         </stylesheets></ChoiceBox>
+      <ChoiceBox fx:id="itemBox" layoutX="6.0" layoutY="265.0" prefWidth="150.0" styleClass="dropDown">
+         <stylesheets>
+            <URL value="@Colors.css" />
+            <URL value="@Styling.css" />
+         </stylesheets></ChoiceBox>
+      <Label id="containerLabel" layoutX="7.0" layoutY="193.0" prefHeight="17.0" prefWidth="144.0" text="Item Container Actions" />
+      <Label id="itemLabel" layoutX="8.0" layoutY="248.0" prefHeight="17.0" prefWidth="144.0" text="Item Actions" />
+      <Pane fx:id="visualPane" layoutX="301.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-border-color: -son-teal;" styleClass="Pane">
          <ImageView fx:id="droneImage" fitHeight="50.0" fitWidth="50.0" layoutX="370.0" layoutY="103.0" />
+         <stylesheets>
+            <URL value="@Styling.css" />
+            <URL value="@Colors.css" />
+         </stylesheets>
       </Pane>
-      <ToggleButton fx:id="toggleDrone" layoutX="20.0" layoutY="564.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="256.0" text="Turn On Drone" />
-      <Label fx:id="priceLabel" layoutX="21.0" layoutY="328.0" prefHeight="56.0" prefWidth="253.0" text="Price:" textAlignment="RIGHT">
+      <Label id="price" fx:id="priceLabel" layoutX="21.0" layoutY="328.0" prefHeight="56.0" prefWidth="253.0" styleClass="labelCustom" text="Price:" textAlignment="RIGHT">
          <font>
             <Font size="18.0" />
          </font>
+         <stylesheets>
+            <URL value="@Styling.css" />
+            <URL value="@Colors.css" />
+         </stylesheets>
       </Label>
-      <Label fx:id="marketValueLabel" layoutX="25.0" layoutY="376.0" prefHeight="56.0" prefWidth="253.0" text="Marketvalue:">
+      <Label id="marketvalue" fx:id="marketValueLabel" layoutX="25.0" layoutY="376.0" prefHeight="56.0" prefWidth="253.0" styleClass="labelCustom" text="Marketvalue:">
          <font>
             <Font size="18.0" />
          </font>
+         <stylesheets>
+            <URL value="@Styling.css" />
+            <URL value="@Colors.css" />
+         </stylesheets>
       </Label>
-      <Line endX="194.0" layoutX="107.0" layoutY="453.0" startX="-109.26713562011719" />
+      <MFXButton fx:id="submitButton" buttonType="RAISED" depthLevel="LEVEL3" layoutX="168.0" layoutY="211.0" prefHeight="25.0" prefWidth="125.0" text="Submit">
+         <stylesheets>
+            <URL value="@Styling.css" />
+            <URL value="@Colors.css" />
+         </stylesheets>
+      </MFXButton>
+      <MFXButton fx:id="fly" buttonType="RAISED" depthLevel="LEVEL3" layoutX="21.0" layoutY="480.0" onAction="#droneAnimation" prefHeight="25.0" prefWidth="132.0" text="Visit Item/Container">
+         <stylesheets>
+            <URL value="@Styling.css" />
+            <URL value="@Colors.css" />
+         </stylesheets>
+      </MFXButton>
+      <MFXButton fx:id="home" layoutX="168.0" layoutY="480.0" onAction="#homeAnimation" prefHeight="25.0" prefWidth="107.0" text="Go Home">
+         <stylesheets>
+            <URL value="@Styling.css" />
+            <URL value="@Colors.css" />
+         </stylesheets>
+      </MFXButton>
+      <MFXButton fx:id="scan" layoutX="20.0" layoutY="514.0" onAction="#StartScanAnimation" prefHeight="25.0" prefWidth="256.0" text="Scan Farm">
+         <stylesheets>
+            <URL value="@Colors.css" />
+            <URL value="@Styling.css" />
+         </stylesheets>
+      </MFXButton>
+      <ToggleButton id="customToggle" fx:id="toggleDrone" layoutX="21.0" layoutY="548.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="256.0" text="Turn On Drone">
+         <stylesheets>
+            <URL value="@Colors.css" />
+            <URL value="@Styling.css" />
+         </stylesheets>
+      </ToggleButton>
    </children>
+   <stylesheets>
+      <URL value="@Colors.css" />
+      <URL value="@Styling.css" />
+   </stylesheets>
 </AnchorPane>

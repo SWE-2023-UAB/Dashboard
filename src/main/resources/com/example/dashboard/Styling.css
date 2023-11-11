@@ -1,0 +1,113 @@
+@import 'Colors.css';
+
+.mfx-button {
+    -fx-text-fill: -son-gray;
+    -fx-background-color: -son-teal;
+}
+
+.mfx-button:hover {
+    -fx-background-color: derive(-son-gray, 20%);
+    -fx-text-fill: -son-teal;
+}
+
+.mfx-button .mfx-ripple-generator {
+    -mfx-ripple-radius: 40;
+    -mfx-auto-clip: true;
+}
+
+.AnchorPane {
+    -fx-background-color: -son-gray;
+}
+
+.Rectangle {
+    -fx-background-color: linear-gradient(to bottom, -son-gray, -son-teal-darker);
+}
+
+.Pane {
+    -fx-background-color: -son-gray;
+}
+
+.toggle-button {
+    -fx-background-color: -son-teal;
+    -fx-text-fill: -son-gray;
+    -fx-font-weight: bold;
+}
+
+.toggle-button:selected {
+    -fx-background-color: -son-red;
+    -fx-text-fill: -son-white;
+}
+
+.toggle-button:selected:hover {
+    -fx-background-color: derive(-son-red, 20%);
+}
+
+.toggle-button:hover {
+    -fx-background-color: derive(-son-gray, 20%);
+    -fx-text-fill: -son-teal;
+}
+
+.myTreeView .tree-cell {
+    -fx-background-color: -son-gray;
+    -fx-text-fill: -son-teal;
+}
+
+.myTreeView .tree-cell:hover {
+    -fx-background-color: derive(-son-gray, 20%);
+}
+
+.myTreeView .tree-cell:selected {
+    -fx-background-color: -son-teal;
+    -fx-text-fill: -son-gray;
+    -fx-font-weight: bold;
+}
+
+.myTreeView {
+    -fx-background-insets: 1;
+}
+
+#containerLabel {
+    -fx-text-fill: -son-teal;
+}
+
+#itemLabel {
+    -fx-text-fill: -son-teal;
+}
+
+.choice-box .context-menu {
+    -fx-background-color: -son-gray;
+}
+
+.choice-box .menu-item:focused {
+    -fx-background-color: -son-teal;
+}
+
+.choice-box .menu-item > .label {
+    -fx-text-fill: -son-teal;
+}
+
+.choice-box .menu-item:focused > .label {
+    -fx-text-fill: black;
+}
+
+.choice-box {
+    -fx-background-color: -son-teal;
+    -fx-mark-color: black;
+}
+
+.choice-box:hover {
+    -fx-background-color: derive(-son-gray, 20%);
+    -fx-mark-color: -son-teal;
+}
+
+.choice-box:hover > .label {
+    -fx-text-fill: -son-teal;
+}
+
+.choice-box > .label {
+    -fx-text-fill: -son-gray;
+}
+
+.labelCustom {
+    -fx-text-fill: -son-teal;
+}

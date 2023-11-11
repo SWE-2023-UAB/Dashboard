@@ -24,7 +24,7 @@ public class DashApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(DashApplication.class.getResource("dash-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1100, 600);
+        Scene scene = new Scene(fxmlLoader.load(), 1100, 599);
         stage.setTitle("Dashboard");
         stage.setScene(scene);
         stage.show();
