@@ -431,14 +431,21 @@ public class Controller implements Initializable {
                 This needs to be changed whenever we have the methods to fly the drone to the item containers
                  */
                 fly.setOnAction(e -> {
+//                    MoveDroneToObject();
+                });
+                scan.setOnAction(e ->{
                     ScanDroneController();
                 });
+
             }
             else {
                 toggleDrone.setText("Turn On Drone");
                 //change the fly button to call the doneAnimation method
                 fly.setOnAction(e -> {
                     droneAnimation(event);
+                });
+                scan.setOnAction(e ->{
+                    StartScanAnimation(event);
                 });
             }
         });
@@ -960,7 +967,6 @@ public class Controller implements Initializable {
                 int centerX = Integer.parseInt(selectedContainer.getLocationX()) + Integer.parseInt(selectedContainer.getLength()) / 2 - 25;
                 int centerY = Integer.parseInt(selectedContainer.getLocationY()) + Integer.parseInt(selectedContainer.getWidth()) / 2 - 25;
                 move(centerX, centerY);
-                MoveDroneToObject(centerX, centerY);
             } else {
                 String containerName = selectedItem.getParent().getValue();
                 ItemContainer container = containerMap.get(containerName);
@@ -972,7 +978,6 @@ public class Controller implements Initializable {
                         int centerX = Integer.parseInt(item.getLocationX()) + Integer.parseInt(item.getLength()) / 2 - 25;
                         int centerY = Integer.parseInt(item.getLocationY()) + Integer.parseInt(item.getWidth()) / 2 - 25;
                         move(centerX, centerY);
-                        MoveDroneToObject(centerX, centerY);
                     }
                 }
             }
@@ -988,7 +993,6 @@ public class Controller implements Initializable {
 
     //Method to scan the whole farm
     public void StartScanAnimation(ActionEvent event) {
-        ScanDroneController();
         double currentX = droneImage.getLayoutX();
         double currentY = droneImage.getLayoutY();
 
