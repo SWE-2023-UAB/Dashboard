@@ -1,6 +1,6 @@
 package com.example.dashboard;
 
-public class Item {
+public class Item implements ItemElement {
     private String name, price, locationX, locationY, length, width, height;
 
     Item(String name, String price, String locationX, String locationY, String length, String width, String height){
@@ -67,5 +67,10 @@ public class Item {
 
     public void setHeight(String height) {
         this.height = height;
+    }
+
+    @Override
+    public int accept(ItemVisitor visitor) {
+        return visitor.visit(this);
     }
 }
