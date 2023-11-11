@@ -1,7 +1,5 @@
 package com.example.dashboard;
-
 import javafx.animation.*;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,16 +13,281 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.SocketException;
 import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.*;
 
 import javafx.scene.image.Image;
 import javafx.util.Duration;
+import com.example.dashboard.control.physical.tello.TelloDrone;
+import com.example.dashboard.control.DroneController;
+
 
 public class Controller implements Initializable {
     //Singleton instance access
     DashApplication instance = DashApplication.getInstance();
+    TelloDrone tello = new TelloDrone();
+    //This is all hypothetical since I don't have the drone, this gets the controller in the drone class
+    DroneController droneController = tello.getController();
+
+    public void MoveDroneToObject(int x, int y) {
+        try {
+            String response = droneController.sendCommand("command");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("takeoff");
+            System.out.println(response);
+            tello.z += 50;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("up 100");
+            System.out.println(response);
+            tello.z += 100;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand(String.format("go %d %d %d %d", y-tello.x, x-tello.y, 0, 40));
+            tello.x = y;
+            tello.y = x;
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("land");
+            System.out.println(response);
+            tello.z += 50;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /*Method which sends a command to the drone controller and returns the response
+     */
+    public void ScanDroneController() {
+        System.out.println("Testing Drone Controller");
+        try {
+            String response = droneController.sendCommand("command");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("takeoff");
+            System.out.println(response);
+            tello.z += 50;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("up 100");
+            System.out.println(response);
+            tello.z += 100;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //GO TO 0,0
+        try {
+            String response = droneController.sendCommand(String.format("go -%d -%d %d %d", tello.x, tello.y, 0, 40));
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //START SCANNING
+        try {
+            String response = droneController.sendCommand("ccw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 878");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 122");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 878");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("ccw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 122");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("ccw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 878");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 122");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 878");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("ccw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 122");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("ccw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 878");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 122");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 878");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //FLY BACK HOME
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 542");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 439");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("cw 90");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("land");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    //THIS IS WHAT I WANT TO BE ABLE TO DO
+
+//    public TelloDrone() throws SocketException, UnknownHostException, FileNotFoundException {
+//        this.controller = new DroneController(9000, 8889, "192.168.10.1");
+//    }
+//    tello.controller.sendCommand("takeoff");
 
     //Hierarchy ==> TreeView
     public TreeView treeView;
@@ -36,6 +299,9 @@ public class Controller implements Initializable {
 
     //initializing visitor
     public ItemVisitorCalc itemVisitorCalc = new ItemVisitorCalc();
+
+    public Controller() throws SocketException, UnknownHostException, FileNotFoundException {
+    }
 
     @FXML
     //Show selected item from hierarchy
@@ -112,6 +378,7 @@ public class Controller implements Initializable {
     public Button fly;
     public Button home;
     public Button scan;
+    public ToggleButton toggleDrone;
 
     @FXML
     // Create dropdown for item and itemcontainer
@@ -155,6 +422,24 @@ public class Controller implements Initializable {
             } else {
                 GetContainerSelection(event);
                 itemContainerBox.getSelectionModel().clearSelection();
+            }
+        });
+        toggleDrone.setOnAction(event -> {
+            if (toggleDrone.isSelected()) {
+                toggleDrone.setText("Turn Off Drone");
+                /*change the fly button to call the test drone controller method
+                This needs to be changed whenever we have the methods to fly the drone to the item containers
+                 */
+                fly.setOnAction(e -> {
+                    ScanDroneController();
+                });
+            }
+            else {
+                toggleDrone.setText("Turn On Drone");
+                //change the fly button to call the doneAnimation method
+                fly.setOnAction(e -> {
+                    droneAnimation(event);
+                });
             }
         });
         treeView.setRoot(rootItem);
@@ -672,9 +957,10 @@ public class Controller implements Initializable {
             if (selectedContainer != null) {
                 //Stop any ongoing animation
                 droneImage.getTransforms().clear();
-                double centerX = Double.parseDouble(selectedContainer.getLocationX()) + Double.parseDouble(selectedContainer.getLength()) / 2 - 25;
-                double centerY = Double.parseDouble(selectedContainer.getLocationY()) + Double.parseDouble(selectedContainer.getWidth()) / 2 - 25;
+                int centerX = Integer.parseInt(selectedContainer.getLocationX()) + Integer.parseInt(selectedContainer.getLength()) / 2 - 25;
+                int centerY = Integer.parseInt(selectedContainer.getLocationY()) + Integer.parseInt(selectedContainer.getWidth()) / 2 - 25;
                 move(centerX, centerY);
+                MoveDroneToObject(centerX, centerY);
             } else {
                 String containerName = selectedItem.getParent().getValue();
                 ItemContainer container = containerMap.get(containerName);
@@ -683,9 +969,10 @@ public class Controller implements Initializable {
                     if (item != null) {
                         //Stop any ongoing animation
                         droneImage.getTransforms().clear();
-                        double centerX = Double.parseDouble(item.getLocationX()) + Double.parseDouble(item.getLength()) / 2 - 25;
-                        double centerY = Double.parseDouble(item.getLocationY()) + Double.parseDouble(item.getWidth()) / 2 - 25;
+                        int centerX = Integer.parseInt(item.getLocationX()) + Integer.parseInt(item.getLength()) / 2 - 25;
+                        int centerY = Integer.parseInt(item.getLocationY()) + Integer.parseInt(item.getWidth()) / 2 - 25;
                         move(centerX, centerY);
+                        MoveDroneToObject(centerX, centerY);
                     }
                 }
             }
@@ -701,8 +988,11 @@ public class Controller implements Initializable {
 
     //Method to scan the whole farm
     public void StartScanAnimation(ActionEvent event) {
+        ScanDroneController();
         double currentX = droneImage.getLayoutX();
         double currentY = droneImage.getLayoutY();
+
+
 
         // Move to (0,0) from starting position
         TranslateTransition moveHome = new TranslateTransition(Duration.seconds(3), droneImage);
@@ -743,7 +1033,7 @@ public class Controller implements Initializable {
                                     TranslateTransition moveBCK02 = new TranslateTransition(Duration.seconds(timeX), droneImage);
                                     moveBCK02.setByX(-fullX);
                                     moveBCK02.play();
-                                    moveBCK02.setOnFinished(l -> {
+                                    moveBCK02.setOnFinished(l ->{
                                         TranslateTransition moveDWN04 = new TranslateTransition(Duration.seconds(timeY), droneImage);
                                         moveDWN04.setByY(someY);
                                         moveDWN04.play();

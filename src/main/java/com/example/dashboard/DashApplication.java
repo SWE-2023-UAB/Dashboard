@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
 public class DashApplication extends Application {
     private static DashApplication instance;
 
