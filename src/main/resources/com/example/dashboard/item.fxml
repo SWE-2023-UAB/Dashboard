@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<DialogPane prefHeight="331.0" prefWidth="445.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.IController">
+<DialogPane prefHeight="331.0" prefWidth="445.0" stylesheets="@Styling.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.IController">
    <content>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>

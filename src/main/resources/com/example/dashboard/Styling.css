@@ -111,3 +111,36 @@
 .labelCustom {
     -fx-text-fill: -son-teal;
 }
+
+.dialog-pane {
+    -fx-background-color: -son-gray;
+}
+
+.dialog-pane .button {
+    -fx-background-color: -son-teal;
+    -fx-text-fill: -son-gray;
+    -fx-border-color: -son-teal;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.dialog-pane .button:hover {
+    -fx-background-color: derive(-son-gray, 20%);
+    -fx-text-fill: -son-teal;
+}
+
+.prompt-text {
+    -fx-text-fill: -son-teal;
+}
+
+.text-field {
+    -fx-background-color: -son-gray;
+    -fx-text-fill: -son-teal;
+    -fx-border-color: -son-teal;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.label {
+    -fx-text-fill: -son-teal;
+}

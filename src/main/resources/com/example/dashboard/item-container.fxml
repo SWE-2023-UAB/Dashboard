@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.ButtonType?>
 <?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
@@ -7,22 +8,23 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+
 <DialogPane prefHeight="380.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.ICController">
    <content>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
-            <Label layoutX="65.0" layoutY="31.0" prefHeight="17.0" prefWidth="302.0" text="Item Container Creation">
+            <Label layoutX="65.0" layoutY="31.0" prefHeight="17.0" prefWidth="302.0" styleClass="prompt-text" text="Item Container Creation">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label layoutX="95.0" layoutY="101.0" prefHeight="17.0" prefWidth="42.0" text="Name:" />
-            <Label layoutX="95.0" layoutY="133.0" prefHeight="17.0" prefWidth="42.0" text="Price:" />
-            <Label layoutX="65.0" layoutY="169.0" prefHeight="17.0" prefWidth="72.0" text="Location X:" />
-            <Label layoutX="65.0" layoutY="200.0" prefHeight="17.0" prefWidth="72.0" text="Location Y:" />
-            <Label layoutX="88.0" layoutY="231.0" prefHeight="17.0" prefWidth="72.0" text="Length:" />
-            <Label layoutX="95.0" layoutY="266.0" prefHeight="17.0" prefWidth="72.0" text="Width:" />
-            <Label layoutX="95.0" layoutY="302.0" prefHeight="17.0" prefWidth="72.0" text="Height:" />
+            <Label layoutX="95.0" layoutY="101.0" prefHeight="17.0" prefWidth="42.0" styleClass="prompt-text" text="Name:" />
+            <Label layoutX="95.0" layoutY="133.0" prefHeight="17.0" prefWidth="42.0" styleClass="prompt-text" text="Price:" />
+            <Label layoutX="65.0" layoutY="169.0" prefHeight="17.0" prefWidth="72.0" styleClass="prompt-text" text="Location X:" />
+            <Label layoutX="65.0" layoutY="200.0" prefHeight="17.0" prefWidth="72.0" styleClass="prompt-text" text="Location Y:" />
+            <Label layoutX="88.0" layoutY="231.0" prefHeight="17.0" prefWidth="72.0" styleClass="prompt-text" text="Length:" />
+            <Label layoutX="95.0" layoutY="266.0" prefHeight="17.0" prefWidth="72.0" styleClass="prompt-text" text="Width:" />
+            <Label layoutX="95.0" layoutY="302.0" prefHeight="17.0" prefWidth="72.0" styleClass="prompt-text" text="Height:" />
             <TextField fx:id="icName" layoutX="147.0" layoutY="96.0" onKeyTyped="#nameChange" />
             <TextField fx:id="icPrice" layoutX="147.0" layoutY="128.0" onKeyTyped="#priceChange" />
             <TextField fx:id="icX" layoutX="147.0" layoutY="165.0" onKeyTyped="#locationxChange" />
@@ -36,4 +38,8 @@
    <buttonTypes>
       <ButtonType fx:constant="FINISH" />
    </buttonTypes>
+   <stylesheets>
+      <URL value="@Styling.css" />
+      <URL value="@Colors.css" />
+   </stylesheets>
 </DialogPane>
