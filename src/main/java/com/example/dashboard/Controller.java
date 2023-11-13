@@ -31,6 +31,7 @@ import com.example.dashboard.control.DroneController;
 
 
 public class Controller implements Initializable {
+    int bulb = 0;
     //Singleton instance access
     DashApplication instance = DashApplication.getInstance();
     TelloDrone tello = new TelloDrone();
@@ -431,7 +432,8 @@ public class Controller implements Initializable {
                 This needs to be changed whenever we have the methods to fly the drone to the item containers
                  */
                 fly.setOnAction(e -> {
-//                    MoveDroneToObject();
+                    bulb = 1;
+                    droneAnimation(event);
                 });
                 scan.setOnAction(e ->{
                     ScanDroneController();
@@ -442,6 +444,7 @@ public class Controller implements Initializable {
                 toggleDrone.setText("Turn On Drone");
                 //change the fly button to call the doneAnimation method
                 fly.setOnAction(e -> {
+                    bulb = 0;
                     droneAnimation(event);
                 });
                 scan.setOnAction(e ->{
@@ -957,27 +960,56 @@ public class Controller implements Initializable {
 
     //Method to animate the drone to the selected item
     public void droneAnimation(ActionEvent event) {
-        TreeItem<String> selectedItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
-        if (selectedItem != null && !selectedItem.getValue().equals("Farm")) {
-            String itemName = selectedItem.getValue();
-            ItemContainer selectedContainer = containerMap.get(itemName);
-            if (selectedContainer != null) {
-                //Stop any ongoing animation
-                droneImage.getTransforms().clear();
-                int centerX = Integer.parseInt(selectedContainer.getLocationX()) + Integer.parseInt(selectedContainer.getLength()) / 2 - 25;
-                int centerY = Integer.parseInt(selectedContainer.getLocationY()) + Integer.parseInt(selectedContainer.getWidth()) / 2 - 25;
-                move(centerX, centerY);
-            } else {
-                String containerName = selectedItem.getParent().getValue();
-                ItemContainer container = containerMap.get(containerName);
-                if (container != null) {
-                    Item item = container.getItemFromMap(itemName);
-                    if (item != null) {
-                        //Stop any ongoing animation
-                        droneImage.getTransforms().clear();
-                        int centerX = Integer.parseInt(item.getLocationX()) + Integer.parseInt(item.getLength()) / 2 - 25;
-                        int centerY = Integer.parseInt(item.getLocationY()) + Integer.parseInt(item.getWidth()) / 2 - 25;
-                        move(centerX, centerY);
+        if (bulb == 0) {
+            TreeItem<String> selectedItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
+            if (selectedItem != null && !selectedItem.getValue().equals("Farm")) {
+                String itemName = selectedItem.getValue();
+                ItemContainer selectedContainer = containerMap.get(itemName);
+                if (selectedContainer != null) {
+                    //Stop any ongoing animation
+                    droneImage.getTransforms().clear();
+                    int centerX = Integer.parseInt(selectedContainer.getLocationX()) + Integer.parseInt(selectedContainer.getLength()) / 2 - 25;
+                    int centerY = Integer.parseInt(selectedContainer.getLocationY()) + Integer.parseInt(selectedContainer.getWidth()) / 2 - 25;
+                    move(centerX, centerY);
+                } else {
+                    String containerName = selectedItem.getParent().getValue();
+                    ItemContainer container = containerMap.get(containerName);
+                    if (container != null) {
+                        Item item = container.getItemFromMap(itemName);
+                        if (item != null) {
+                            //Stop any ongoing animation
+                            droneImage.getTransforms().clear();
+                            int centerX = Integer.parseInt(item.getLocationX()) + Integer.parseInt(item.getLength()) / 2 - 25;
+                            int centerY = Integer.parseInt(item.getLocationY()) + Integer.parseInt(item.getWidth()) / 2 - 25;
+                            move(centerX, centerY);
+                        }
+                    }
+                }
+            }
+        }
+        else {
+            TreeItem<String> selectedItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
+            if (selectedItem != null && !selectedItem.getValue().equals("Farm")) {
+                String itemName = selectedItem.getValue();
+                ItemContainer selectedContainer = containerMap.get(itemName);
+                if (selectedContainer != null) {
+                    //Stop any ongoing animation
+                    droneImage.getTransforms().clear();
+                    int centerX = Integer.parseInt(selectedContainer.getLocationX()) + Integer.parseInt(selectedContainer.getLength()) / 2 - 25;
+                    int centerY = Integer.parseInt(selectedContainer.getLocationY()) + Integer.parseInt(selectedContainer.getWidth()) / 2 - 25;
+                    MoveDroneToObject(centerX, centerY);
+                } else {
+                    String containerName = selectedItem.getParent().getValue();
+                    ItemContainer container = containerMap.get(containerName);
+                    if (container != null) {
+                        Item item = container.getItemFromMap(itemName);
+                        if (item != null) {
+                            //Stop any ongoing animation
+                            droneImage.getTransforms().clear();
+                            int centerX = Integer.parseInt(item.getLocationX()) + Integer.parseInt(item.getLength()) / 2 - 25;
+                            int centerY = Integer.parseInt(item.getLocationY()) + Integer.parseInt(item.getWidth()) / 2 - 25;
+                            MoveDroneToObject(centerX, centerY);
+                        }
                     }
                 }
             }
