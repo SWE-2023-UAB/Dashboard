@@ -60,7 +60,7 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
         try {
-            String response = droneController.sendCommand(String.format("go %d %d %d %d", y-tello.x, x-tello.y, 0, 40));
+            String response = droneController.sendCommand(String.format("go %d %d %d %d", y-tello.x, x-tello.y, 0, 80));
             tello.x = y;
             tello.y = x;
             System.out.println(response);
@@ -103,7 +103,7 @@ public class Controller implements Initializable {
         }
         //GO TO 0,0
         try {
-            String response = droneController.sendCommand(String.format("go -%d -%d %d %d", tello.x, tello.y, 0, 40));
+            String response = droneController.sendCommand(String.format("go -%d -%d %d %d", tello.x, tello.y, 0, 80));
             System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();
@@ -1031,13 +1031,13 @@ public class Controller implements Initializable {
 
 
         // Move to (0,0) from starting position
-        TranslateTransition moveHome = new TranslateTransition(Duration.seconds(3), droneImage);
+        TranslateTransition moveHome = new TranslateTransition(Duration.seconds(8), droneImage);
         move(0, 0);
 
         double fullX = 720;
         double someY = 100;
-        double timeX = 1.5;
-        double timeY = 0.5;
+        double timeX = 10.5;
+        double timeY = 1.5;
 
         // Set an event handler to start the next transition when the first one is finished
         moveHome.setOnFinished(e -> {
@@ -1107,15 +1107,17 @@ public class Controller implements Initializable {
         //Calculate the translation relative to the current position
         double translateX = x - currentX;
         double translateY = y - currentY;
+
+        double distantBetweenPoints = Math.sqrt((currentX-translateX)*(currentX-translateX) + (currentY-translateY)*(currentY-translateY));
         //Create the translation animation
-        TranslateTransition translate = new TranslateTransition(Duration.seconds(1), droneImage);
+        TranslateTransition translate = new TranslateTransition(Duration.seconds(6), droneImage);
         translate.setDelay(Duration.seconds(1));
         translate.setToX(translateX);
         translate.setToY(translateY);
         //Rotate the drone
         RotateTransition rotate = new RotateTransition(Duration.seconds(1), droneImage);
         rotate.setByAngle(360);
-        rotate.setCycleCount(3);
+        rotate.setCycleCount(1);
         rotate.setInterpolator(Interpolator.LINEAR);
         //Sequentially play the translation and rotation
         ParallelTransition parallel = new ParallelTransition(rotate, translate);
