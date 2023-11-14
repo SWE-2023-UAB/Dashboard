@@ -431,6 +431,10 @@ public class Controller implements Initializable {
                 /*change the fly button to call the test drone controller method
                 This needs to be changed whenever we have the methods to fly the drone to the item containers
                  */
+                home.setOnAction(e -> {
+                    bulb = 1;
+                    homeAnimation(event);
+                });
                 fly.setOnAction(e -> {
                     bulb = 1;
                     droneAnimation(event);
@@ -442,6 +446,10 @@ public class Controller implements Initializable {
             }
             else {
                 toggleDrone.setText("Turn On Drone");
+                home.setOnAction(e -> {
+                    bulb = 0;
+                    homeAnimation(event);
+                });
                 //change the fly button to call the doneAnimation method
                 fly.setOnAction(e -> {
                     bulb = 0;
@@ -1018,9 +1026,16 @@ public class Controller implements Initializable {
 
     //Method to animate the drone to the home position
     public void homeAnimation(ActionEvent event) {
-        double homeX = Double.parseDouble(containerMap.get("Drone Box").getLocationX()) + 15;
-        double homeY = Double.parseDouble(containerMap.get("Drone Box").getLocationY()) + 15;
-        move(homeX, homeY);
+        if (bulb == 0){
+            double homeX = Double.parseDouble(containerMap.get("Drone Box").getLocationX()) + 15;
+            double homeY = Double.parseDouble(containerMap.get("Drone Box").getLocationY()) + 15;
+            move(homeX, homeY);
+        }
+        else{
+            int homeX = Integer.parseInt(containerMap.get("Drone Box").getLocationX()) + 15;
+            int homeY = Integer.parseInt(containerMap.get("Drone Box").getLocationY()) + 15;
+            MoveDroneToObject(homeX, homeY);
+        }
     }
 
     //Method to scan the whole farm
@@ -1031,13 +1046,13 @@ public class Controller implements Initializable {
 
 
         // Move to (0,0) from starting position
-        TranslateTransition moveHome = new TranslateTransition(Duration.seconds(8), droneImage);
+        TranslateTransition moveHome = new TranslateTransition(Duration.seconds(3), droneImage);
         move(0, 0);
 
         double fullX = 720;
         double someY = 100;
-        double timeX = 10.5;
-        double timeY = 1.5;
+        double timeX = 1.5;
+        double timeY = .5;
 
         // Set an event handler to start the next transition when the first one is finished
         moveHome.setOnFinished(e -> {
@@ -1107,17 +1122,15 @@ public class Controller implements Initializable {
         //Calculate the translation relative to the current position
         double translateX = x - currentX;
         double translateY = y - currentY;
-
-        double distantBetweenPoints = Math.sqrt((currentX-translateX)*(currentX-translateX) + (currentY-translateY)*(currentY-translateY));
         //Create the translation animation
-        TranslateTransition translate = new TranslateTransition(Duration.seconds(6), droneImage);
+        TranslateTransition translate = new TranslateTransition(Duration.seconds(1), droneImage);
         translate.setDelay(Duration.seconds(1));
         translate.setToX(translateX);
         translate.setToY(translateY);
         //Rotate the drone
         RotateTransition rotate = new RotateTransition(Duration.seconds(1), droneImage);
         rotate.setByAngle(360);
-        rotate.setCycleCount(1);
+        rotate.setCycleCount(3);
         rotate.setInterpolator(Interpolator.LINEAR);
         //Sequentially play the translation and rotation
         ParallelTransition parallel = new ParallelTransition(rotate, translate);
