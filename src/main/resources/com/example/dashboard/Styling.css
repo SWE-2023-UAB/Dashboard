@@ -64,6 +64,7 @@
 
 .myTreeView {
     -fx-background-insets: 1;
+    -fx-background-color: transparent;
 }
 
 #containerLabel {
@@ -148,4 +149,10 @@
 .dialog-pane {
     -fx-border-radius: 10px;
     -fx-border-color: -son-gray;
+}
+
+#minimize, #closing {
+    -fx-padding: 0;
+    -fx-margin: 0;
+    -fx-background-color: transparent;
 }

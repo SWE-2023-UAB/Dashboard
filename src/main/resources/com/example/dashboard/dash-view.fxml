@@ -2,6 +2,7 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleButton?>
@@ -15,9 +16,9 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" styleClass="AnchorPane" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="633.0" prefWidth="1100.0" styleClass="AnchorPane" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.Controller">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" height="4.0" layoutX="-34.0" layoutY="314.0" stroke="BLACK" strokeType="INSIDE" styleClass="Rectangle" width="381.0">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="4.0" layoutX="-36.0" layoutY="346.0" stroke="BLACK" strokeType="INSIDE" styleClass="Rectangle" width="381.0">
          <fill>
             <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                <stops>
@@ -45,7 +46,7 @@
             </RadialGradient>
          </fill>
       </Rectangle>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" height="4.0" layoutX="-33.0" layoutY="443.0" stroke="BLACK" strokeType="INSIDE" styleClass="Rectangle" width="381.0">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" height="4.0" layoutX="-35.0" layoutY="475.0" stroke="BLACK" strokeType="INSIDE" styleClass="Rectangle" width="381.0">
          <fill>
             <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                <stops>
@@ -73,31 +74,31 @@
             </RadialGradient>
          </fill>
       </Rectangle>
-      <TreeView fx:id="treeView" layoutX="7.0" layoutY="7.0" onContextMenuRequested="#SelectItem" onMouseClicked="#SelectItem" prefHeight="180.0" prefWidth="287.0" styleClass="myTreeView">
+      <TreeView fx:id="treeView" layoutX="3.0" layoutY="32.0" onContextMenuRequested="#SelectItem" onMouseClicked="#SelectItem" prefHeight="180.0" prefWidth="287.0" styleClass="myTreeView">
          <stylesheets>
             <URL value="@Styling.css" />
             <URL value="@Colors.css" />
          </stylesheets></TreeView>
-      <ChoiceBox fx:id="itemContainerBox" layoutX="7.0" layoutY="211.0" prefHeight="25.0" prefWidth="150.0" styleClass="dropDown">
+      <ChoiceBox fx:id="itemContainerBox" layoutX="5.0" layoutY="243.0" prefHeight="25.0" prefWidth="150.0" styleClass="dropDown">
          <stylesheets>
             <URL value="@Colors.css" />
             <URL value="@Styling.css" />
          </stylesheets></ChoiceBox>
-      <ChoiceBox fx:id="itemBox" layoutX="6.0" layoutY="265.0" prefWidth="150.0" styleClass="dropDown">
+      <ChoiceBox fx:id="itemBox" layoutX="4.0" layoutY="297.0" prefWidth="150.0" styleClass="dropDown">
          <stylesheets>
             <URL value="@Colors.css" />
             <URL value="@Styling.css" />
          </stylesheets></ChoiceBox>
-      <Label id="containerLabel" layoutX="7.0" layoutY="193.0" prefHeight="17.0" prefWidth="144.0" text="Item Container Actions" />
-      <Label id="itemLabel" layoutX="8.0" layoutY="248.0" prefHeight="17.0" prefWidth="144.0" text="Item Actions" />
-      <Pane fx:id="visualPane" layoutX="301.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-border-color: -son-teal;" styleClass="Pane">
+      <Label id="containerLabel" layoutX="5.0" layoutY="225.0" prefHeight="17.0" prefWidth="144.0" text="Item Container Actions" />
+      <Label id="itemLabel" layoutX="6.0" layoutY="280.0" prefHeight="17.0" prefWidth="144.0" text="Item Actions" />
+      <Pane fx:id="visualPane" layoutX="300.0" layoutY="32.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-border-color: -son-teal;" styleClass="Pane">
          <ImageView fx:id="droneImage" fitHeight="50.0" fitWidth="50.0" layoutX="370.0" layoutY="103.0" />
          <stylesheets>
             <URL value="@Styling.css" />
             <URL value="@Colors.css" />
          </stylesheets>
       </Pane>
-      <Label id="price" fx:id="priceLabel" layoutX="21.0" layoutY="328.0" prefHeight="56.0" prefWidth="253.0" styleClass="labelCustom" text="Price:" textAlignment="RIGHT">
+      <Label id="price" fx:id="priceLabel" layoutX="19.0" layoutY="360.0" prefHeight="56.0" prefWidth="253.0" styleClass="labelCustom" text="Price:" textAlignment="RIGHT">
          <font>
             <Font size="18.0" />
          </font>
@@ -106,7 +107,7 @@
             <URL value="@Colors.css" />
          </stylesheets>
       </Label>
-      <Label id="marketvalue" fx:id="marketValueLabel" layoutX="25.0" layoutY="376.0" prefHeight="56.0" prefWidth="253.0" styleClass="labelCustom" text="Marketvalue:">
+      <Label id="marketvalue" fx:id="marketValueLabel" layoutX="23.0" layoutY="408.0" prefHeight="56.0" prefWidth="253.0" styleClass="labelCustom" text="Marketvalue:">
          <font>
             <Font size="18.0" />
          </font>
@@ -115,36 +116,45 @@
             <URL value="@Colors.css" />
          </stylesheets>
       </Label>
-      <MFXButton fx:id="submitButton" buttonType="RAISED" depthLevel="LEVEL3" layoutX="168.0" layoutY="211.0" prefHeight="25.0" prefWidth="125.0" text="Submit">
+      <MFXButton fx:id="submitButton" buttonType="RAISED" depthLevel="LEVEL3" layoutX="166.0" layoutY="243.0" prefHeight="25.0" prefWidth="125.0" text="Submit">
          <stylesheets>
             <URL value="@Styling.css" />
             <URL value="@Colors.css" />
          </stylesheets>
       </MFXButton>
-      <MFXButton fx:id="fly" buttonType="RAISED" depthLevel="LEVEL3" layoutX="21.0" layoutY="480.0" onAction="#droneAnimation" prefHeight="25.0" prefWidth="132.0" text="Visit Item/Container">
+      <MFXButton fx:id="fly" buttonType="RAISED" depthLevel="LEVEL3" layoutX="19.0" layoutY="512.0" onAction="#droneAnimation" prefHeight="25.0" prefWidth="132.0" text="Visit Item/Container">
          <stylesheets>
             <URL value="@Styling.css" />
             <URL value="@Colors.css" />
          </stylesheets>
       </MFXButton>
-      <MFXButton fx:id="home" layoutX="168.0" layoutY="480.0" onAction="#homeAnimation" prefHeight="25.0" prefWidth="107.0" text="Go Home">
+      <MFXButton fx:id="home" layoutX="166.0" layoutY="512.0" onAction="#homeAnimation" prefHeight="25.0" prefWidth="107.0" text="Go Home">
          <stylesheets>
             <URL value="@Styling.css" />
             <URL value="@Colors.css" />
          </stylesheets>
       </MFXButton>
-      <MFXButton fx:id="scan" layoutX="20.0" layoutY="514.0" onAction="#StartScanAnimation" prefHeight="25.0" prefWidth="256.0" text="Scan Farm">
+      <MFXButton fx:id="scan" layoutX="18.0" layoutY="546.0" onAction="#StartScanAnimation" prefHeight="25.0" prefWidth="256.0" text="Scan Farm">
          <stylesheets>
             <URL value="@Colors.css" />
             <URL value="@Styling.css" />
          </stylesheets>
       </MFXButton>
-      <ToggleButton id="customToggle" fx:id="toggleDrone" layoutX="21.0" layoutY="548.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="256.0" text="Turn On Drone">
+      <ToggleButton id="customToggle" fx:id="toggleDrone" layoutX="19.0" layoutY="580.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="256.0" text="Turn On Drone">
          <stylesheets>
             <URL value="@Colors.css" />
             <URL value="@Styling.css" />
          </stylesheets>
       </ToggleButton>
+      <AnchorPane fx:id="title" prefHeight="33.0" prefWidth="1101.0" />
+      <Label prefHeight="31.0" prefWidth="298.0" text="DRONE DASHBOARD APPLICATION">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <font>
+            <Font name="Arial Black" size="13.0" />
+         </font>
+      </Label>
    </children>
    <stylesheets>
       <URL value="@Colors.css" />

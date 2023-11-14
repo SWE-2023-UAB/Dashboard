@@ -41,4 +41,7 @@
       <URL value="@Styling.css" />
       <URL value="@Colors.css" />
    </stylesheets>
+   <header>
+      <AnchorPane fx:id="title" prefHeight="20.0" prefWidth="368.0" />
+   </header>
 </DialogPane>

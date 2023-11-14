@@ -4,9 +4,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -25,6 +27,7 @@ import java.util.ResourceBundle;
 import java.util.*;
 
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import com.example.dashboard.control.physical.tello.TelloDrone;
 import com.example.dashboard.control.DroneController;
