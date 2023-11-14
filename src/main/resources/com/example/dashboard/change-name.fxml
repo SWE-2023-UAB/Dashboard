@@ -11,13 +11,13 @@
    <content>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
-            <Label alignment="TOP_CENTER" layoutX="53.0" layoutY="32.0" prefHeight="17.0" prefWidth="302.0" text="Change Name" textAlignment="CENTER">
+            <Label alignment="TOP_CENTER" layoutX="38.0" layoutY="32.0" prefHeight="17.0" prefWidth="302.0" text="Change Name" textAlignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label layoutX="97.0" layoutY="176.0" prefHeight="17.0" prefWidth="42.0" text="Name:" />
-            <TextField fx:id="newNameField" layoutX="151.0" layoutY="172.0" onKeyTyped="#changeName" />
+            <Label layoutX="63.0" layoutY="100.0" prefHeight="17.0" prefWidth="42.0" text="Name:" />
+            <TextField fx:id="newNameField" layoutX="115.0" layoutY="95.0" onKeyTyped="#changeName" />
          </children>
       </AnchorPane>
    </content>
