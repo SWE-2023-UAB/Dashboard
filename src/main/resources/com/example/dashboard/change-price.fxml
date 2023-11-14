@@ -11,7 +11,7 @@
    <content>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
-            <Label alignment="TOP_CENTER" layoutX="32.0" layoutY="31.0" prefHeight="17.0" prefWidth="302.0" text="Item Container Creation" textAlignment="CENTER">
+            <Label alignment="TOP_CENTER" layoutX="32.0" layoutY="31.0" prefHeight="17.0" prefWidth="302.0" text="Change Price" textAlignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>
