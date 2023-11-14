@@ -144,3 +144,8 @@
 .label {
     -fx-text-fill: -son-teal;
 }
+
+.dialog-pane {
+    -fx-border-radius: 10px;
+    -fx-border-color: -son-gray;
+}

@@ -28,6 +28,7 @@ public class DashApplication extends Application {
         stage.setTitle("Dashboard");
         stage.setScene(scene);
         stage.show();
+        stage.setResizable(false);
     }
 
     // Main Method
