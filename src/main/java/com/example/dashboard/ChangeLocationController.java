@@ -6,6 +6,9 @@ import javafx.scene.input.KeyEvent;
 
 //serves the purpose of being the controller for modifying location in change-location.fxml
 public class ChangeLocationController {
+
+    //Adding in the singleton
+    DashApplication instance = DashApplication.getInstance();
     @FXML
     public TextField xCoordField;
     @FXML

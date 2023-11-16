@@ -6,6 +6,9 @@ import javafx.scene.input.KeyEvent;
 
 //servers the purpose of being the controller for modifying dimensions in change-dimensions.fxml
 public class ChangeDimensionsController {
+
+    //Adding in the singleton
+    DashApplication instance = DashApplication.getInstance();
     @FXML
     public TextField lengthField;
     @FXML
