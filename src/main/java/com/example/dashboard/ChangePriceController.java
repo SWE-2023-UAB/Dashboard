@@ -5,6 +5,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 public class ChangePriceController {
+
+    //Adding singleton instance access to accurately reflect UML diagram
+    DashApplication instance = DashApplication.getInstance();
     @FXML
     public TextField newPriceField;
 
