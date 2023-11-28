@@ -359,8 +359,7 @@ public class Controller implements Initializable {
     //Calculate market value by excluding all containers and only including items
     public int calculateTotalMarket(TreeItem<String> currentItem) {
         int totalValue = 0;
-        if (currentItem != null && containerMap.containsKey(currentItem.getValue())) {
-            ItemContainer currentContainer = containerMap.get(currentItem.getValue());
+        if (currentItem != null) {
             for (TreeItem<String> child : currentItem.getChildren()) {
                 //Check if the child is an itemContainer
                 if (containerMap.containsKey(child.getValue())) {
@@ -375,6 +374,90 @@ public class Controller implements Initializable {
             }
         }
         return totalValue;
+    }
+
+    //function used for recursively moving each item/container that is a child of selected container.
+    public void recursiveMoveXY(TreeItem <String> currentItemOrContainer, String xToMove, String yToMove){
+        if(currentItemOrContainer != null && containerMap.containsKey(currentItemOrContainer.getValue())){
+            //getting offset position which will be used in future child calculations.
+            int xOriginal = Integer.parseInt(containerMap.get(currentItemOrContainer.getValue()).getLocationX());
+            int yOriginal = Integer.parseInt(containerMap.get(currentItemOrContainer.getValue()).getLocationY());
+            int newXPosition = Integer.parseInt(xToMove);
+            int newYPosition = Integer.parseInt(yToMove);
+            int xOffset;
+            int yOffset;
+
+            if(xOriginal > newXPosition){
+                xOffset = xOriginal - newXPosition;
+            }
+            else{
+                xOffset = newXPosition - xOriginal;
+            }
+            if(yOriginal > newYPosition){
+                yOffset = yOriginal - newYPosition;
+            }
+            else{
+                yOffset = newYPosition - yOriginal;
+            }
+            containerMap.get(currentItemOrContainer.getValue()).setLocationX(xToMove);
+            containerMap.get(currentItemOrContainer.getValue()).setLocationY(yToMove);
+            updateRectangle(currentItemOrContainer);
+            System.out.println("PARENT COORD: " + containerMap.get(currentItemOrContainer.getValue()).getLocationX() +", " + containerMap.get(currentItemOrContainer.getValue()).getLocationY());
+            for(TreeItem <String> child : currentItemOrContainer.getChildren()){
+                if(containerMap.containsKey(child.getValue())) {
+                    //USED FOR CONTAINER CHILDREN
+                    //should be current child's x location + or - xToMove
+                    //should be current child's y location + or - yToMove
+                    int xChildCoord = Integer.parseInt(containerMap.get(child.getValue()).getLocationX());
+                    int yChildCoord = Integer.parseInt(containerMap.get(child.getValue()).getLocationY());
+                    int newXChildPosition;
+                    int newYChildPosition;
+                    if(xOriginal > newXPosition){
+                        newXChildPosition = xChildCoord - xOffset;
+                    }
+                    else{
+                        newXChildPosition = xOffset + xChildCoord;
+                    }
+                    if(yOriginal > newYPosition){
+                        newYChildPosition = yChildCoord - yOffset;
+                    }
+                    else{
+                        newYChildPosition = yOffset + yChildCoord;
+                    }
+                    System.out.println("CURRENT CHILD CONT: " + xChildCoord +", " + yChildCoord);
+
+                    System.out.println("NEW CHILD CONT: " + newXChildPosition +", " + newYChildPosition);
+                    //called recursively
+                    recursiveMoveXY(child, String.valueOf(newXChildPosition), String.valueOf(newYChildPosition));
+                }
+                else if (containerMap.get(currentItemOrContainer.getValue()).getItemFromMap(child.getValue()) != null){
+                    //USED FOR ITEM CHILDREN
+                    //getting current child, shifting it then recursively calling function
+                    //should be current child's x location + or - xToMove
+                    //should be current child's y location + or - yToMove
+                    int xChildCoord = Integer.parseInt(containerMap.get(currentItemOrContainer.getValue()).getItemFromMap(child.getValue()).getLocationX());
+                    int yChildCoord = Integer.parseInt(containerMap.get(currentItemOrContainer.getValue()).getItemFromMap(child.getValue()).getLocationY());
+                    int newXChildPosition;
+                    int newYChildPosition;
+                    if(xOriginal > newXPosition){
+                        newXChildPosition = xChildCoord - xOffset;
+                    }
+                    else{
+                        newXChildPosition = xOffset + xChildCoord;
+                    }
+                    if(yOriginal > newYPosition){
+                        newYChildPosition = yChildCoord - yOffset;
+                    }
+                    else{
+                        newYChildPosition = yOffset + yChildCoord;
+                    }
+                    containerMap.get(currentItemOrContainer.getValue()).getItemFromMap(child.getValue()).setLocationX(String.valueOf(newXChildPosition));
+                    containerMap.get(currentItemOrContainer.getValue()).getItemFromMap(child.getValue()).setLocationY(String.valueOf(newYChildPosition));
+                    System.out.println("ITEM CHILD COORD: " + newXChildPosition +", " + newYChildPosition);
+                    updateRectangle(child);
+                }
+            }
+        }
     }
 
     public Pane visualPane;
@@ -703,7 +786,7 @@ public class Controller implements Initializable {
                                 //print out to console to check if it worked
                                 System.out.println("New Name: " + containerMap.get(curr.getValue()).getName());
                                 //updating rectangle
-                                updateRectangle(updatedContainer.getName());
+                                updateRectangle(curr);
                             }
                             //Change name of the item
                             else {
@@ -720,7 +803,7 @@ public class Controller implements Initializable {
                                     groupMap.put(updatedItem.getName(), updatedGroup);
                                     curr.setValue(newName);
                                     //updating rectangle
-                                    updateRectangle(updatedItem.getName());
+                                    updateRectangle(curr);
                                 }
                             }
                         }
@@ -790,12 +873,13 @@ public class Controller implements Initializable {
 
                             if (updatedContainer != null) {
                                 //updating x and y
-                                containerMap.get(curr.getValue()).setLocationX(newX);
-                                containerMap.get(curr.getValue()).setLocationY(newY);
-                                System.out.println("New Coords: (" + containerMap.get(curr.getValue()).getLocationX()
-                                        + ", (" + containerMap.get(curr.getValue()).getLocationY() + ")");
-                                //updating rectangle
-                                updateRectangle(curr.getValue());
+//                                containerMap.get(curr.getValue()).setLocationX(newX);
+//                                containerMap.get(curr.getValue()).setLocationY(newY);
+//                                System.out.println("New Coords: (" + containerMap.get(curr.getValue()).getLocationX()
+//                                        + ", (" + containerMap.get(curr.getValue()).getLocationY() + ")");
+//                                //updating rectangle
+//                                updateRectangle(curr.getValue());
+                                recursiveMoveXY(curr, newX, newY);
                             } else {
                                 Item updatedItem = containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue());
                                 if (updatedItem != null) {
@@ -803,7 +887,7 @@ public class Controller implements Initializable {
                                     containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setLocationX(newX);
                                     containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setLocationY(newY);
                                     //rectangle updated
-                                    updateRectangle(curr.getValue());
+                                    updateRectangle(curr);
                                 }
                             }
                         }
@@ -840,9 +924,8 @@ public class Controller implements Initializable {
                                         + " x " + containerMap.get(curr.getValue()).getWidth() + " x "
                                         + containerMap.get(curr.getValue()).getHeight());
                                 //updating rectangle
-                                updateRectangle(curr.getValue().toString());
+                                updateRectangle(curr);
                             } else {
-                                //not too sure why this is here, since technically it wastes memory, but it's just used for checks
                                 Item updatedItem = containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue());
                                 if (updatedItem != null) {
                                     //you don't gotta update the group, group update is only necessary for name changes.
@@ -850,7 +933,7 @@ public class Controller implements Initializable {
                                     containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setLength(newLength);
                                     containerMap.get(curr.getParent().getValue()).getItemFromMap(curr.getValue()).setHeight(newHeight);
                                     //rectangle updated
-                                    updateRectangle(curr.getValue());
+                                    updateRectangle(curr);
                                 }
                             }
                         }
@@ -923,12 +1006,13 @@ public class Controller implements Initializable {
     }
 
     //Method to update the rectangles when itemContainer or item is changed
-    public void updateRectangle(String name) {
+    //maybe pass in tree node as arg as well and set that as curr?
+    public void updateRectangle(TreeItem<String> currentItemOrContainer) {
+        String name = currentItemOrContainer.getValue();
         Group group = groupMap.get(name);
-        TreeItem<String> curr = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
         if (group != null) {
             //Retrieve either the itemContainer or item from the containerMap
-            ItemContainer itemContainer = containerMap.get(curr.getValue());
+            ItemContainer itemContainer = containerMap.get(name);
             if (itemContainer != null) {
                 System.out.println("Run");
                 Rectangle rectangle = (Rectangle) group.getChildren().get(0);
@@ -938,6 +1022,7 @@ public class Controller implements Initializable {
                 rectangle.setY(Double.parseDouble(itemContainer.getLocationY()));
                 rectangle.setWidth(Double.parseDouble(itemContainer.getLength()));
                 rectangle.setHeight(Double.parseDouble(itemContainer.getWidth()));
+                System.out.println(itemContainer.getName() +": "+rectangle.getX()+", "+rectangle.getY());
                 //Update the text
                 text.setText(itemContainer.getName());
                 text.setX(Double.parseDouble(itemContainer.getLocationX()) + 5);
@@ -946,7 +1031,7 @@ public class Controller implements Initializable {
                 group.getChildren().set(0, rectangle);
                 group.getChildren().set(1, text);
             } else {
-                Item item = containerMap.get(curr.getParent().getValue()).getItemFromMap(name);
+                Item item = containerMap.get(currentItemOrContainer.getParent().getValue()).getItemFromMap(name);
                 if (item != null) {
                     Rectangle rectangle = (Rectangle) group.getChildren().get(0);
                     Text text = (Text) group.getChildren().get(1);
