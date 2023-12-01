@@ -66,9 +66,12 @@ public class Controller implements Initializable {
             String response = droneController.sendCommand(String.format("go %d %d %d %d", y-tello.x, x-tello.y, 0, 80));
             tello.x = y;
             tello.y = x;
+            Thread.sleep(3000);
             System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
         try {
             String response = droneController.sendCommand("land");
@@ -107,9 +110,12 @@ public class Controller implements Initializable {
         //GO TO 0,0
         try {
             String response = droneController.sendCommand(String.format("go -%d -%d %d %d", tello.x, tello.y, 0, 80));
+            Thread.sleep(3000);
             System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
         //START SCANNING
@@ -120,7 +126,13 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
         try {
-            String response = droneController.sendCommand("forward 878");
+            String response = droneController.sendCommand("forward 500");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 378");
             System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();
@@ -144,7 +156,13 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
         try {
-            String response = droneController.sendCommand("forward 878");
+            String response = droneController.sendCommand("forward 500");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 378");
             System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();
@@ -168,7 +186,13 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
         try {
-            String response = droneController.sendCommand("forward 878");
+            String response = droneController.sendCommand("forward 500");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 378");
             System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();
@@ -192,7 +216,13 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
         try {
-            String response = droneController.sendCommand("forward 878");
+            String response = droneController.sendCommand("forward 500");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 378");
             System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();
@@ -216,7 +246,13 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
         try {
-            String response = droneController.sendCommand("forward 878");
+            String response = droneController.sendCommand("forward 500");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 378");
             System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();
@@ -240,7 +276,13 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
         try {
-            String response = droneController.sendCommand("forward 878");
+            String response = droneController.sendCommand("forward 500");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 378");
             System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();
@@ -253,7 +295,13 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
         try {
-            String response = droneController.sendCommand("forward 542");
+            String response = droneController.sendCommand("forward 500");
+            System.out.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            String response = droneController.sendCommand("forward 42");
             System.out.println(response);
         } catch (IOException e) {
             e.printStackTrace();

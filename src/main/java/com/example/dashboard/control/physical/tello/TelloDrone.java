@@ -711,6 +711,7 @@ public class TelloDrone extends MultiRotorDrone {
 		System.out.println("Tello: command takeoff land flip forward back left right" + "\n" + "      " + " up down cw ccw speed speed?" + "\n");
 		System.out.println("end -- quit demo" + "\n");
 
+
 		Scanner scan = new Scanner(System.in);
 
 		String command = scan.nextLine();
